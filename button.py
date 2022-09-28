@@ -1,7 +1,8 @@
 import pygame
 
-#button class
+# button class
 class Button():
+    # constructor
     def __init__(self, x, y, image, scale):
         width = image.get_width()
         height = image.get_height()
@@ -10,6 +11,7 @@ class Button():
         self.rect.topleft = (x, y)
         self.clicked = False
 
+    # method to create the button on screen
     def draw(self, surface):
         action = False
         #getting mouse position
@@ -25,4 +27,3 @@ class Button():
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
-    
