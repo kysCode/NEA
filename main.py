@@ -52,14 +52,26 @@ class Snake:
   def move(self):
     self.velX = 0
     self.velY = 0
-    if self.left_pressed and not self.right_pressed:
-      self.velX = -self.speed
-    if self.right_pressed and not self.left_pressed:
-      self.velX = self.speed
-    if self.up_pressed and not self.down_pressed:
-      self.velY = -self.speed
-    if self.down_pressed and not self.up_pressed:
-      self.velY = self.speed
+    if not self.right_pressed:
+      if self.left_pressed:
+        self.velX = -self.speed
+        self.up_pressed = False
+        self.down_pressed = False
+    if not self.left_pressed:
+      if self.right_pressed:
+        self.velX = self.speed
+        self.up_pressed = False
+        self.down_pressed = False
+    if not self.down_pressed:
+      if self.up_pressed:
+        self.velY = -self.speed
+        self.right_pressed = False
+        self.left_pressed = False
+    if not self.up_pressed:
+      if self.down_pressed:
+        self.velY = self.speed
+        self.right_pressed = False
+        self.left_pressed = False
         
     self.x += self.velX
     self.y += self.velY
@@ -92,17 +104,6 @@ snake = Snake(screenWidth / 2, screenHeight / 2)
 # creating gameplay loop
 run = True
 while run:
-  # giving the screen its colour
-  screen.fill(background)
-
-  # pressing a button will turn one of the boolean values to true
-  if startButton.draw(screen):
-    gameStarted = True
-
-  if gameStarted:
-      screen.fill(background)
-      snake.draw(screen)
-
   for event in pygame.event.get():
     # ending the game when the window is closed
     if event.type == pygame.QUIT:
@@ -118,6 +119,17 @@ while run:
         snake.up_pressed = True
       if event.key == pygame.K_DOWN:
         snake.down_pressed = True
+
+  # giving the screen its colour
+  screen.fill(background)
+
+  # pressing a button will turn one of the boolean values to true
+  if startButton.draw(screen):
+    gameStarted = True
+
+  if gameStarted:
+      screen.fill(background)
+      snake.draw(screen)
       
 
   snake.move()
