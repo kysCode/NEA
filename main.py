@@ -23,10 +23,49 @@ class Button():
                 self.clicked = True
                 action = True
 
-        #drawing button on screen
+        # drawing button on screen
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
+
+# snake class
+class Snake:
+  #constructor
+  def __init__(self, x, y):
+    self.x = int(x)
+    self.y = int(y)
+    self.rect = pygame.Rect(self.x, self.y, 32, 32)
+    self.color = (120, 0, 120)
+    self.velX = 0
+    self.velY = 0
+    self.left_pressed = False
+    self.right_pressed = False
+    self.up_pressed = False
+    self.down_pressed = False
+    self.speed = 1
+      
+  # draws snake on screen
+  def draw(self, window):
+    pygame.draw.rect(window, self.color, self.rect)
+
+  # moving the snake
+  def move(self):
+    self.velX = 0
+    self.velY = 0
+    if self.left_pressed and not self.right_pressed:
+      self.velX = -self.speed
+    if self.right_pressed and not self.left_pressed:
+      self.velX = self.speed
+    if self.up_pressed and not self.down_pressed:
+      self.velY = -self.speed
+    if self.down_pressed and not self.up_pressed:
+      self.velY = self.speed
+        
+    self.x += self.velX
+    self.y += self.velY
+
+    self.rect = pygame.Rect(int(self.x), int(self.y), 32, 32)
+
 
 pygame.init()
 
@@ -47,21 +86,41 @@ startImg = pygame.image.load("start").convert_alpha()
 # making a button using the image
 startButton = Button(20, 10, startImg, 0.2)
 
+gameStarted = False
+snake = Snake(screenWidth / 2, screenHeight / 2)
+
 # creating gameplay loop
 run = True
 while run:
-    # giving the screen its colour
-    screen.fill(background)
+  # giving the screen its colour
+  screen.fill(background)
 
-    # pressing a button will turn one of the boolean values to true
-    if startButton.draw(screen):
-        print("Clicked")
+  # pressing a button will turn one of the boolean values to true
+  if startButton.draw(screen):
+    gameStarted = True
 
+  if gameStarted:
+      screen.fill(background)
+      snake.draw(screen)
+
+  for event in pygame.event.get():
     # ending the game when the window is closed
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+    if event.type == pygame.QUIT:
+      run = False
 
-    pygame.display.update()
+    # checking what direction to move in
+    if event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_LEFT:
+        snake.left_pressed = True
+      if event.key == pygame.K_RIGHT:
+        snake.right_pressed = True
+      if event.key == pygame.K_UP:
+        snake.up_pressed = True
+      if event.key == pygame.K_DOWN:
+        snake.down_pressed = True
+      
+
+  snake.move()
+  pygame.display.update()
 
 pygame.quit()
