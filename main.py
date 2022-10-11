@@ -52,26 +52,14 @@ class Snake:
   def move(self):
     self.velX = 0
     self.velY = 0
-    if not self.right_pressed:
-      if self.left_pressed:
-        self.velX = -self.speed
-        self.up_pressed = False
-        self.down_pressed = False
-    if not self.left_pressed:
-      if self.right_pressed:
-        self.velX = self.speed
-        self.up_pressed = False
-        self.down_pressed = False
-    if not self.down_pressed:
-      if self.up_pressed:
-        self.velY = -self.speed
-        self.right_pressed = False
-        self.left_pressed = False
-    if not self.up_pressed:
-      if self.down_pressed:
-        self.velY = self.speed
-        self.right_pressed = False
-        self.left_pressed = False
+    if self.left_pressed:
+      self.velX = -self.speed
+    if self.right_pressed:
+      self.velX = self.speed
+    if self.up_pressed:
+      self.velY = -self.speed
+    if self.down_pressed:
+      self.velY = self.speed
         
     self.x += self.velX
     self.y += self.velY
@@ -111,14 +99,22 @@ while run:
 
     # checking what direction to move in
     if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_LEFT:
+      if event.key == pygame.K_LEFT and not snake.right_pressed:
         snake.left_pressed = True
-      if event.key == pygame.K_RIGHT:
+        snake.up_pressed = False
+        snake.down_pressed = False
+      if event.key == pygame.K_RIGHT and not snake.left_pressed:
         snake.right_pressed = True
-      if event.key == pygame.K_UP:
+        snake.up_pressed = False
+        snake.down_pressed = False
+      if event.key == pygame.K_UP and not snake.down_pressed:
         snake.up_pressed = True
-      if event.key == pygame.K_DOWN:
+        snake.right_pressed = False
+        snake.left_pressed = False
+      if event.key == pygame.K_DOWN and not snake.up_pressed:
         snake.down_pressed = True
+        snake.right_pressed = False
+        snake.left_pressed = False
 
   # giving the screen its colour
   screen.fill(background)
