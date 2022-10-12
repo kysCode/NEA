@@ -100,11 +100,6 @@ while run:
     # movement
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed:
-        if snake.x == 0:
-          gameStarted = False
-          snake.left_pressed = False
-          print("Game over")
-        else:
           snake.left_pressed = True
           snake.up_pressed = False
           snake.down_pressed = False
@@ -120,6 +115,10 @@ while run:
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
+      if snake.x <= 0:
+        gameStarted = False
+        snake.left_pressed = False
+        print("Game over")
 
   # giving the screen its colour
   screen.fill(background)
