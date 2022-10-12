@@ -97,12 +97,17 @@ while run:
     if event.type == pygame.QUIT:
       run = False
 
-    # checking what direction to move in
+    # movement
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed:
-        snake.left_pressed = True
-        snake.up_pressed = False
-        snake.down_pressed = False
+        if snake.x == 0:
+          gameStarted = False
+          snake.left_pressed = False
+          print("Game over")
+        else:
+          snake.left_pressed = True
+          snake.up_pressed = False
+          snake.down_pressed = False
       if event.key == pygame.K_RIGHT and not snake.left_pressed:
         snake.right_pressed = True
         snake.up_pressed = False
