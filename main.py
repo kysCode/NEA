@@ -115,17 +115,19 @@ while run:
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
-      if snake.x <= 0:
-        gameStarted = False
-        snake.left_pressed = False
-        print("Game over")
+    if snake.x <= 0 and snake.left_pressed:
+      gameStarted = False
+      snake.left_pressed = False
+      print("Game over")
 
   # giving the screen its colour
   screen.fill(background)
 
   # pressing a button will turn one of the boolean values to true
-  if startButton.draw(screen):
-    gameStarted = True
+  if not gameStarted:
+    screen.fill(background)
+    if startButton.draw(screen):
+      gameStarted = True
 
   if gameStarted:
       screen.fill(background)
