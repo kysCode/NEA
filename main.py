@@ -43,6 +43,7 @@ class Snake:
     self.up_pressed = False
     self.down_pressed = False
     self.speed = 1
+    self.hitBoundary = False
       
   # draws snake on screen
   def draw(self, window):
@@ -52,13 +53,15 @@ class Snake:
   def move(self):
     self.velX = 0
     self.velY = 0
-    if self.left_pressed and self.x > 0:
+    if not (self.x > 0 and self.x < 768 and self.y > 0 and self.y < 668):
+      self.hitBoundary = True
+    if self.left_pressed and not self.hitBoundary:
       self.velX = -self.speed
-    if self.right_pressed and self.x < 768:
+    if self.right_pressed and not self.hitBoundary:
       self.velX = self.speed
-    if self.up_pressed and self.y > 0:
+    if self.up_pressed and not self.hitBoundary:
       self.velY = -self.speed
-    if self.down_pressed and self.y < 668:
+    if self.down_pressed and not self.hitBoundary:
       self.velY = self.speed
         
     self.x += self.velX
@@ -115,11 +118,12 @@ while run:
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
-      if ((snake.left_pressed or snake.right_pressed) and snake.velX == 0) or ((snake.up_pressed or snake.down_pressed) and snake.velY == 0):
-        print("Game over")
-        gameStarted = False
-        snake.x = screenWidth / 2
-        snake. y = screenHeight / 2
+
+    if snake.hitBoundary:
+      print("Game over")
+      gameStarted = False
+      snake.x = screenWidth / 2
+      snake.y = screenHeight / 2
 
   # giving the screen its colour
   screen.fill(background)
