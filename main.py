@@ -53,7 +53,10 @@ class Snake:
     self.velX = 0
     self.velY = 0
     if self.left_pressed:
-      self.velX = -self.speed
+      if self.x <= 0:
+        self.velX = 0
+      else:
+        self.velX = -self.speed
     if self.right_pressed:
       self.velX = self.speed
     if self.up_pressed:
@@ -103,10 +106,6 @@ while run:
           snake.left_pressed = True
           snake.up_pressed = False
           snake.down_pressed = False
-          if snake.x <= 0 and snake.left_pressed:
-            snake.left_pressed = False
-            gameStarted = False
-            print("Game over")
       if event.key == pygame.K_RIGHT and not snake.left_pressed:
         snake.right_pressed = True
         snake.up_pressed = False
