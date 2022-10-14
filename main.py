@@ -115,6 +115,11 @@ while run:
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
+      if ((snake.left_pressed or snake.right_pressed) and snake.velX == 0) or ((snake.up_pressed or snake.down_pressed) and snake.velY == 0):
+        print("Game over")
+        gameStarted = False
+        snake.x = screenWidth / 2
+        snake. y = screenHeight / 2
 
   # giving the screen its colour
   screen.fill(background)
