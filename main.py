@@ -54,11 +54,11 @@ class Snake:
     self.velY = 0
     if self.left_pressed and self.x > 0:
       self.velX = -self.speed
-    if self.right_pressed and self.x < 800:
+    if self.right_pressed and self.x < 768:
       self.velX = self.speed
     if self.up_pressed and self.y > 0:
       self.velY = -self.speed
-    if self.down_pressed and self.y < 700:
+    if self.down_pressed and self.y < 668:
       self.velY = self.speed
         
     self.x += self.velX
