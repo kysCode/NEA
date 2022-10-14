@@ -52,11 +52,8 @@ class Snake:
   def move(self):
     self.velX = 0
     self.velY = 0
-    if self.left_pressed:
-      if self.x <= 0:
-        self.velX = 0
-      else:
-        self.velX = -self.speed
+    if self.left_pressed and self.x > 0:
+      self.velX = -self.speed
     if self.right_pressed:
       self.velX = self.speed
     if self.up_pressed:
