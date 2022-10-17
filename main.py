@@ -32,19 +32,18 @@ class Button():
 class Snake():
   #constructor
   def __init__(self, image, x, y):
-    self.image = pygame.transform.scale(image, (32, 32))
+    self.image = pygame.transform.scale(image, (40, 40))
     self.rect = self.image.get_rect()
     self.x = int(x)
     self.y = int(y)
     self.rect = pygame.Rect(self.x, self.y, 32, 32)
-    self.color = (120, 0, 120)
     self.velX = 0
     self.velY = 0
     self.left_pressed = False
     self.right_pressed = False
     self.up_pressed = False
     self.down_pressed = False
-    self.speed = 1
+    self.speed = 0.5
     self.hitBoundary = False
       
   # draws snake on screen
@@ -55,21 +54,35 @@ class Snake():
   def move(self):
     self.velX = 0
     self.velY = 0
+    angle = 0
+    #this is the angle the image of the snake will be rotated by
+    
+    # checking if the snake has hit the edge of the screen
     if not (self.x > 0 and self.x < 768 and self.y > 0 and self.y < 668):
       self.hitBoundary = True
+
+    # changes the horizontal and vertical velocity depending on the direction the snake is moving in as long as the edge isn't hit
     if self.left_pressed and not self.hitBoundary:
       self.velX = -self.speed
+      angle = 180
     if self.right_pressed and not self.hitBoundary:
       self.velX = self.speed
     if self.up_pressed and not self.hitBoundary:
       self.velY = -self.speed
+      angle = 90
     if self.down_pressed and not self.hitBoundary:
       self.velY = self.speed
-        
+      angle = 270
+
+    # changing the x and y coordinate
     self.x += self.velX
     self.y += self.velY
 
+    # recreates the sprite in the new position making it seem like it moved
     self.rect = pygame.Rect(int(self.x), int(self.y), 32, 32)
+
+    #rotating the snake
+    self.image = pygame.transform.rotate(self.image, angle)
 
 
 pygame.init()
@@ -103,7 +116,7 @@ while run:
     if event.type == pygame.QUIT:
       run = False
 
-    # movement
+    # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed:
           snake.left_pressed = True
@@ -141,8 +154,8 @@ while run:
       screen.fill(background)
       snake.draw(screen)
       
-
   snake.move()
   pygame.display.update()
+  # updating the screen
 
 pygame.quit()
