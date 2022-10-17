@@ -29,9 +29,11 @@ class Button():
         return action
 
 # snake class
-class Snake:
+class Snake():
   #constructor
-  def __init__(self, x, y):
+  def __init__(self, image, x, y):
+    self.image = pygame.transform.scale(image, (32, 32))
+    self.rect = self.image.get_rect()
     self.x = int(x)
     self.y = int(y)
     self.rect = pygame.Rect(self.x, self.y, 32, 32)
@@ -47,7 +49,7 @@ class Snake:
       
   # draws snake on screen
   def draw(self, window):
-    pygame.draw.rect(window, self.color, self.rect)
+    window.blit(self.image, (self.x, self.y))
 
   # moving the snake
   def move(self):
@@ -85,12 +87,13 @@ background = (0, 200, 0)
 
 # loading images from my computer into the program
 startImg = pygame.image.load("start").convert_alpha()
+snake1 = pygame.image.load("snakeHead.png").convert_alpha()
 
 # making a button using the image
 startButton = Button(20, 10, startImg, 0.2)
 
 gameStarted = False
-snake = Snake(screenWidth / 2, screenHeight / 2)
+snake = Snake(snake1, screenWidth / 2, screenHeight / 2)
 
 # creating gameplay loop
 run = True
