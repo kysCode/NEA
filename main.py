@@ -54,7 +54,6 @@ class Snake():
   def move(self):
     self.velX = 0
     self.velY = 0
-    #this is the angle the image of the snake will be rotated by
     
     # checking if the snake has hit the edge of the screen
     if not (self.x > -10 and self.x < 767 and self.y > -9 and self.y < 662):
@@ -76,9 +75,6 @@ class Snake():
 
     # recreates the sprite in the new position making it seem like it moved
     self.rect = pygame.Rect(int(self.x), int(self.y), 32, 32)
-
-    #rotating the snake
-
 
 pygame.init()
 
