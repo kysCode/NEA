@@ -43,7 +43,7 @@ class Snake():
     self.right_pressed = False
     self.up_pressed = False
     self.down_pressed = False
-    self.speed = 0.5
+    self.speed = 1
     self.hitBoundary = False
       
   # draws snake on screen
@@ -54,25 +54,21 @@ class Snake():
   def move(self):
     self.velX = 0
     self.velY = 0
-    angle = 0
     #this is the angle the image of the snake will be rotated by
     
     # checking if the snake has hit the edge of the screen
-    if not (self.x > 0 and self.x < 768 and self.y > 0 and self.y < 668):
+    if not (self.x > -10 and self.x < 767 and self.y > -9 and self.y < 662):
       self.hitBoundary = True
 
     # changes the horizontal and vertical velocity depending on the direction the snake is moving in as long as the edge isn't hit
     if self.left_pressed and not self.hitBoundary:
       self.velX = -self.speed
-      angle = 180
     if self.right_pressed and not self.hitBoundary:
       self.velX = self.speed
     if self.up_pressed and not self.hitBoundary:
       self.velY = -self.speed
-      angle = 90
     if self.down_pressed and not self.hitBoundary:
       self.velY = self.speed
-      angle = 270
 
     # changing the x and y coordinate
     self.x += self.velX
@@ -82,7 +78,6 @@ class Snake():
     self.rect = pygame.Rect(int(self.x), int(self.y), 32, 32)
 
     #rotating the snake
-    self.image = pygame.transform.rotate(self.image, angle)
 
 
 pygame.init()
