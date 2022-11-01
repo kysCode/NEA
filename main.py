@@ -56,7 +56,7 @@ class Snake():
     self.velY = 0
     
     # checking if the snake has hit the edge of the screen
-    if not (self.x > -10 and self.x < 767 and self.y > -9 and self.y < 662):
+    if not (self.x > -10 and self.x < 767 and self.y > -9 and self.y < 618):
       self.hitBoundary = True
 
     # changes the horizontal and vertical velocity depending on the direction the snake is moving in as long as the edge isn't hit
@@ -80,7 +80,7 @@ pygame.init()
 
 # giving the window its dimensions
 screenWidth = 800
-screenHeight = 700
+screenHeight = 650
 screen = pygame.display.set_mode((screenWidth, screenHeight))
 
 # giving the window a name
