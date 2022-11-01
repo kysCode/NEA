@@ -45,10 +45,20 @@ class Snake():
     self.down_pressed = False
     self.speed = 1
     self.hitBoundary = False
+    self.angle = 0
       
   # draws snake on screen
   def draw(self, window):
-    window.blit(self.image, (self.x, self.y))
+    if self.up_pressed:
+        self.angle = 90
+    elif self.down_pressed:
+        self.angle = 270
+    elif self.left_pressed:
+        self.angle = 180
+    elif self.right_pressed:
+        self.angle = 0
+    image = pygame.transform.rotate(self.image, self.angle)
+    window.blit(image, (self.x, self.y))
 
   # moving the snake
   def move(self):
@@ -74,7 +84,7 @@ class Snake():
     self.y += self.velY
 
     # recreates the sprite in the new position making it seem like it moved
-    self.rect = pygame.Rect(int(self.x), int(self.y), 32, 32)
+    self.image = pygame.Rect(int(self.x), int(self.y), 32, 32)
 
 pygame.init()
 
