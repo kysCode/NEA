@@ -45,7 +45,6 @@ class Snake():
     self.down_pressed = False
     self.speed = 1
     self.hitBoundary = False
-    self.angle = 0
       
   # draws snake on screen
   def draw(self, window):
