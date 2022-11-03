@@ -49,15 +49,18 @@ class Snake():
       
   # draws snake on screen
   def draw(self, window):
+    # creating a local variable that holds the image so the original image doesn't need to be changed
+    image = self.image
+    
+    # rotating the image depending on which button is pressed
+    if self.left_pressed:
+      image = pygame.transform.rotate(self.image, 180)
     if self.up_pressed:
-        self.angle = 90
-    elif self.down_pressed:
-        self.angle = 270
-    elif self.left_pressed:
-        self.angle = 180
-    elif self.right_pressed:
-        self.angle = 0
-    image = pygame.transform.rotate(self.image, self.angle)
+      image = pygame.transform.rotate(self.image, 90)
+    if self.down_pressed:
+      image = pygame.transform.rotate(self.image, 270)
+    
+    #showing the image of the snake on the window
     window.blit(image, (self.x, self.y))
 
   # moving the snake
