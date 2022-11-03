@@ -52,12 +52,18 @@ class Snake():
     image = self.image
     
     # rotating the image depending on which button is pressed
-    if self.left_pressed:
-      image = pygame.transform.rotate(self.image, 180)
-    if self.up_pressed:
-      image = pygame.transform.rotate(self.image, 90)
-    if self.down_pressed:
-      image = pygame.transform.rotate(self.image, 270)
+    if not self.hitBoundary:
+      if self.left_pressed:
+        image = pygame.transform.rotate(self.image, 180)
+      elif self.up_pressed:
+        image = pygame.transform.rotate(self.image, 90)
+      elif self.down_pressed:
+        image = pygame.transform.rotate(self.image, 270)
+      lastImage = image # variable to hold the snake in its previous orientation
+      
+    # retains the orientation of the snake after it hits the boundary
+    else:
+      image = lastImage
     
     #showing the image of the snake on the window
     window.blit(image, (self.x, self.y))
