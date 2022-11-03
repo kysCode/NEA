@@ -70,15 +70,19 @@ class Snake():
     # checking if the snake has hit the edge of the screen
     if not (self.x > -10 and self.x < 767 and self.y > -9 and self.y < 618):
       self.hitBoundary = True
+      self.left_pressed = False
+      self.right_pressed = False
+      self.up_pressed = False
+      self.down_pressed = False
 
     # changes the horizontal and vertical velocity depending on the direction the snake is moving in as long as the edge isn't hit
-    if self.left_pressed and not self.hitBoundary:
+    if self.left_pressed:
       self.velX = -self.speed
-    if self.right_pressed and not self.hitBoundary:
+    if self.right_pressed:
       self.velX = self.speed
-    if self.up_pressed and not self.hitBoundary:
+    if self.up_pressed:
       self.velY = -self.speed
-    if self.down_pressed and not self.hitBoundary:
+    if self.down_pressed:
       self.velY = self.speed
 
     # changing the x and y coordinate
@@ -109,6 +113,7 @@ snake1 = pygame.image.load("snakeHead.png").convert_alpha()
 startButton = Button(20, 10, startImg, 0.2)
 
 gameStarted = False
+gameOver = False
 snake = Snake(snake1, screenWidth / 2, screenHeight / 2)
 
 # creating gameplay loop
@@ -138,11 +143,12 @@ while run:
         snake.right_pressed = False
         snake.left_pressed = False
 
-    if snake.hitBoundary:
+    if snake.hitBoundary and not gameOver:
       print("Game over")
       gameStarted = False
       snake.x = screenWidth / 2
       snake.y = screenHeight / 2
+      gameOver = True
 
   # giving the screen its colour
   screen.fill(background)
