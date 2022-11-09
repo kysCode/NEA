@@ -107,12 +107,15 @@ class Fruit():
     self.image = pygame.transform.scale(image, (40, 40))
     self.x = -1
     self.y = -1
+    self.drawn = False
 
   # drawing the fruit on the screen
   def draw(self, width, height, window): # takes in the screen width and height as parameters
-    self.x = random.randint(0, width)
-    self.y = random.randint(0, height)
-    window.blit(self.image, (self.x, self.y))
+    if not self.drawn:
+        self.x = random.randint(0, width)
+        self.y = random.randint(0, height)
+        window.blit(self.image, (self.x, self.y))
+        self.drawn = True
     
 pygame.init()
 
@@ -187,6 +190,7 @@ while run:
       screen.fill(background)
       snake.draw(screen)
       apple.draw(screenWidth, screenHeight, screen)
+      print(apple.x, apple.y)
       
   snake.move()
   pygame.display.update()
