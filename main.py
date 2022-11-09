@@ -1,4 +1,5 @@
 import pygame
+import random
 
 # button class
 class Button():
@@ -99,6 +100,20 @@ class Snake():
     # recreates the sprite in the new position making it seem like it moved
     self.image = pygame.Rect(int(self.x), int(self.y), 32, 32)
 
+# fruit class
+class Fruit():
+  # constructor
+  def __init__(self, image):
+    self.image = pygame.transform.scale(image, (40, 40))
+    self.x = -1
+    self.y = -1
+
+  # drawing the fruit on the screen
+  def draw(self, width, height, window): # takes in the screen width and height as parameters
+    self.x = random.randint(0, width)
+    self.y = random.randint(0, height)
+    window.blit(self.image, (self.x, self.y))
+    
 pygame.init()
 
 # giving the window its dimensions
@@ -112,9 +127,10 @@ pygame.display.set_caption("Snek")
 # making a colour for the background
 background = (0, 200, 0)
 
-# loading images from my computer into the program
+# loading images from computer into the program
 startImg = pygame.image.load("start").convert_alpha()
 snake1 = pygame.image.load("snakeHead.png").convert_alpha()
+fruitImg = pygame.image.load("fruit.png").convert_alpha()
 
 # making a button using the image
 startButton = Button(20, 10, startImg, 0.2)
@@ -122,6 +138,7 @@ startButton = Button(20, 10, startImg, 0.2)
 gameStarted = False
 gameOver = False
 snake = Snake(snake1, screenWidth / 2, screenHeight / 2)
+apple = Fruit(fruitImg)
 
 # creating gameplay loop
 run = True
@@ -169,6 +186,7 @@ while run:
   if gameStarted:
       screen.fill(background)
       snake.draw(screen)
+      apple.draw(screenWidth, screenHeight, screen)
       
   snake.move()
   pygame.display.update()
