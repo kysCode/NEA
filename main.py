@@ -131,7 +131,7 @@ screen = pygame.display.set_mode((screenWidth, screenHeight))
 pygame.display.set_caption("Snek")
 
 # making a colour for the background
-background = (0, 200, 0)
+background = (0, 175, 0)
 
 # loading images from computer into the program
 startImg = pygame.image.load("start").convert_alpha()
