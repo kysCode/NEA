@@ -193,6 +193,8 @@ while run:
       screen.fill(background)
       snake.draw(screen)
       apple.draw(screenWidth, screenHeight, screen)
+      if snake.x == apple.x and snake.y == apple.y:
+        apple.drawn = False
       
   snake.move()
   pygame.display.update()
