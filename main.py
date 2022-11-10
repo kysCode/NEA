@@ -104,7 +104,7 @@ class Snake():
 class Fruit():
   # constructor
   def __init__(self, image):
-    self.image = pygame.transform.scale(image, (40, 40))
+    self.image = pygame.transform.scale(image, (35, 35))
     self.x = -1
     self.y = -1
     self.drawn = False
