@@ -108,14 +108,17 @@ class Fruit():
     self.x = -1
     self.y = -1
     self.drawn = False
+    
+  def randomiseLocation(self, w, h):
+    if not self.drawn:
+     self.x = random.randint(0, w)
+     self.y = random.randint(0, h)
 
   # drawing the fruit on the screen
-  def draw(self, width, height, window): # takes in the screen width and height as parameters
-    if not self.drawn:
-        self.x = random.randint(0, width)
-        self.y = random.randint(0, height)
-        window.blit(self.image, (self.x, self.y))
-        self.drawn = True
+  def draw(self, width, height, window):
+    self.randomiseLocation(width, height)
+    window.blit(self.image, (self.x, self.y))
+    self.drawn = True
     
 pygame.init()
 
@@ -190,7 +193,6 @@ while run:
       screen.fill(background)
       snake.draw(screen)
       apple.draw(screenWidth, screenHeight, screen)
-      print(apple.x, apple.y)
       
   snake.move()
   pygame.display.update()
