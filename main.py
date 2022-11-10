@@ -193,7 +193,7 @@ while run:
       screen.fill(background)
       snake.draw(screen)
       apple.draw(screenWidth, screenHeight, screen)
-      if snake.x == apple.x and snake.y == apple.y:
+      if snake.x == apple.x and snake.y == apple.y: # checking if the snake and fruit have the same coordinates
         apple.drawn = False
       
   snake.move()
