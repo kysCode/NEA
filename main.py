@@ -47,6 +47,7 @@ class Snake():
     self.speed = 1
     self.hitBoundary = False
     self.angle = 0
+    self.score = 0
       
   # draws snake on screen
   def draw(self, window):
@@ -121,6 +122,8 @@ class Fruit():
     self.drawn = True
     
 pygame.init()
+font = pygame.font.SysFont('Arial', 24)
+black = (0, 0, 0)
 
 # giving the window its dimensions
 screenWidth = 800
@@ -145,6 +148,7 @@ gameStarted = False
 gameOver = False
 snake = Snake(snake1, screenWidth / 2, screenHeight / 2)
 apple = Fruit(fruitImg)
+score = font.render(("Score: " + str(snake.score)), True, black, background)
 
 # creating gameplay loop
 run = True
@@ -195,6 +199,7 @@ while run:
       apple.draw(screenWidth, screenHeight, screen)
       if snake.x == apple.x and snake.y == apple.y: # checking if the snake and fruit have the same coordinates
         apple.drawn = False
+        snake.score += 1
         pygame.display.update()
       
   snake.move()
