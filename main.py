@@ -195,6 +195,7 @@ while run:
       apple.draw(screenWidth, screenHeight, screen)
       if snake.x == apple.x and snake.y == apple.y: # checking if the snake and fruit have the same coordinates
         apple.drawn = False
+        pygame.display.update()
       
   snake.move()
   pygame.display.update()
