@@ -28,7 +28,7 @@ class Button():
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
-
+      
 # snake class
 class Snake():
   #constructor
@@ -50,7 +50,7 @@ class Snake():
     self.score = 0
       
   # draws snake on screen
-  def draw(self, window):
+  def draw(self, window):    
     # changing the angle of rotation depending on the key pressed
     if not self.hitBoundary:
       if self.left_pressed:
@@ -64,9 +64,6 @@ class Snake():
 
     # rotating image
     image = pygame.transform.rotate(self.image, self.angle)
-    
-    #showing the image of the snake on the window
-    window.blit(image, (self.x, self.y))
     
     #showing the image of the snake on the window
     window.blit(image, (self.x, self.y))
@@ -99,7 +96,7 @@ class Snake():
     self.y += self.velY
 
     # recreates the sprite in the new position making it seem like it moved
-    self.image = pygame.Rect(int(self.x), int(self.y), 32, 32)
+    self.rect = pygame.Rect(int(self.x), int(self.y), 32, 32)
 
 # fruit class
 class Fruit():
@@ -109,19 +106,22 @@ class Fruit():
     self.x = -1
     self.y = -1
     self.drawn = False
-    
+
+  # assigning the fruit to a location
   def randomiseLocation(self, w, h):
     if not self.drawn:
-     self.x = random.randint(0, w)
-     self.y = random.randint(0, h)
+      self.x = random.randint(0, w)
+      self.y = random.randint(0, h)
 
   # drawing the fruit on the screen
   def draw(self, width, height, window):
     self.randomiseLocation(width, height)
     window.blit(self.image, (self.x, self.y))
     self.drawn = True
-    
+  
 pygame.init()
+
+# creating text font and colour
 font = pygame.font.SysFont('Arial', 24)
 black = (0, 0, 0)
 
@@ -170,22 +170,24 @@ while run:
           player[i].left_pressed = True
           player[i].up_pressed = False
           player[i].down_pressed = False
-      elif event.key == pygame.K_RIGHT and not snake.left_pressed:
+      if event.key == pygame.K_RIGHT and not snake.left_pressed:
         for i in range(0, len(player)):
           player[i].right_pressed = True
           player[i].up_pressed = False
           player[i].down_pressed = False
-      elif event.key == pygame.K_UP and not snake.down_pressed:
+      if event.key == pygame.K_UP and not snake.down_pressed:
         for i in range(0, len(player)):
           player[i].up_pressed = True
           player[i].right_pressed = False
           player[i].left_pressed = False
-      elif event.key == pygame.K_DOWN and not snake.up_pressed:
+      if event.key == pygame.K_DOWN and not snake.up_pressed:
         for i in range(0, len(player)):
           player[i].down_pressed = True
           player[i].right_pressed = False
           player[i].left_pressed = False
+        
 
+    # ending the game when the snake hits the edge
     if snake.hitBoundary and not gameOver:
       print("Game over")
       gameStarted = False
@@ -203,14 +205,17 @@ while run:
       gameStarted = True
 
   if gameStarted:
-      screen.fill(background)
-      snake.draw(screen)
-      apple.draw(screenWidth, screenHeight, screen)
-      if apple.x - 17 <= snake.x <= apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17: # checking if the snake and fruit overlap
-        apple.drawn = False
-        snake.score += 1
-        pygame.display.update()
-      
+    screen.fill(background)
+    snake.draw(screen)
+    snake2.draw(screen)
+    snake3.draw(screen)
+    apple.draw(screenWidth, screenHeight, screen)
+    screen.blit(score, (0,0))
+    if apple.x - 17 <= snake.x <=apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17: # checking if the snake and fruit overlap
+      apple.drawn = False
+      snake.score += 1
+      pygame.display.update()
+
   snake.move()
   pygame.display.update()
   # updating the screen
