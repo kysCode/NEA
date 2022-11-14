@@ -197,7 +197,7 @@ while run:
       screen.fill(background)
       snake.draw(screen)
       apple.draw(screenWidth, screenHeight, screen)
-      if snake.x == apple.x and snake.y == apple.y: # checking if the snake and fruit have the same coordinates
+      if apple.x - 17 <= snake.x <= apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17: # checking if the snake and fruit overlap
         apple.drawn = False
         snake.score += 1
         pygame.display.update()
