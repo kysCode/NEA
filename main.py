@@ -138,7 +138,9 @@ background = (0, 175, 0)
 
 # loading images from computer into the program
 startImg = pygame.image.load("start").convert_alpha()
-snake1 = pygame.image.load("snakeHead.png").convert_alpha()
+snakeHead = pygame.image.load("snakeHead.png").convert_alpha()
+snakeBody = pygame.image.load("snakeBody.png").convert_alpha()
+snakeEnd = pygame.image.load("snakeEnd.png").convert_alpha()
 fruitImg = pygame.image.load("fruit.png").convert_alpha()
 
 # making a button using the image
@@ -146,7 +148,10 @@ startButton = Button(20, 10, startImg, 0.2)
 
 gameStarted = False
 gameOver = False
-snake = Snake(snake1, screenWidth / 2, screenHeight / 2)
+snake = Snake(snakeHead, screenWidth / 2, screenHeight / 2)
+snake2 = Snake(snakeBody, screenWidth / 2, screenHeight / 2)
+snake3 = Snake(snakeBody, screenWidth / 2, screenHeight / 2)
+player = [snake, snake2, snake3]
 apple = Fruit(fruitImg)
 
 # creating gameplay loop
@@ -161,21 +166,25 @@ while run:
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed:
-          snake.left_pressed = True
-          snake.up_pressed = False
-          snake.down_pressed = False
-      if event.key == pygame.K_RIGHT and not snake.left_pressed:
-        snake.right_pressed = True
-        snake.up_pressed = False
-        snake.down_pressed = False
-      if event.key == pygame.K_UP and not snake.down_pressed:
-        snake.up_pressed = True
-        snake.right_pressed = False
-        snake.left_pressed = False
-      if event.key == pygame.K_DOWN and not snake.up_pressed:
-        snake.down_pressed = True
-        snake.right_pressed = False
-        snake.left_pressed = False
+        for i in range(0, len(player)):
+          player[i].left_pressed = True
+          player[i].up_pressed = False
+          player[i].down_pressed = False
+      elif event.key == pygame.K_RIGHT and not snake.left_pressed:
+        for i in range(0, len(player)):
+          player[i].right_pressed = True
+          player[i].up_pressed = False
+          player[i].down_pressed = False
+      elif event.key == pygame.K_UP and not snake.down_pressed:
+        for i in range(0, len(player)):
+          player[i].up_pressed = True
+          player[i].right_pressed = False
+          player[i].left_pressed = False
+      elif event.key == pygame.K_DOWN and not snake.up_pressed:
+        for i in range(0, len(player)):
+          player[i].down_pressed = True
+          player[i].right_pressed = False
+          player[i].left_pressed = False
 
     if snake.hitBoundary and not gameOver:
       print("Game over")
