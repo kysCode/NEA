@@ -149,8 +149,8 @@ startButton = Button(20, 10, startImg, 0.2)
 gameStarted = False
 gameOver = False
 snake = Snake(snakeHead, screenWidth / 2, screenHeight / 2)
-snake2 = Snake(snakeBody, screenWidth / 2, screenHeight / 2)
-snake3 = Snake(snakeBody, screenWidth / 2, screenHeight / 2)
+snake2 = Snake(snakeBody, screenWidth / 2 - 22, screenHeight / 2)
+snake3 = Snake(snakeEnd, screenWidth / 2 - 44, screenHeight / 2)
 player = [snake, snake2, snake3]
 apple = Fruit(fruitImg)
 
@@ -216,7 +216,8 @@ while run:
       snake.score += 1
       pygame.display.update()
 
-  snake.move()
+  for i in range(0, len(player)):
+    player[i].move()
   pygame.display.update()
   # updating the screen
 
