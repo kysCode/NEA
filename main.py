@@ -148,11 +148,11 @@ gameStarted = False
 gameOver = False
 snake = Snake(snake1, screenWidth / 2, screenHeight / 2)
 apple = Fruit(fruitImg)
-score = font.render(("Score: " + str(snake.score)), True, black, background)
 
 # creating gameplay loop
 run = True
 while run:
+  score = font.render(("Score: " + str(snake.score)), True, black, background)
   for event in pygame.event.get():
     # ending the game when the window is closed
     if event.type == pygame.QUIT:
