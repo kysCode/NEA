@@ -85,16 +85,16 @@ class Snake():
     # changes the horizontal and vertical velocity depending on the direction the snake is moving in as long as the edge isn't hit
     if self.left_pressed:
       self.velX = -self.speed
-      self.turning_point = (self.x, self.y)
+      self.turning_point = (self.x + 23, self.y)
     if self.right_pressed:
       self.velX = self.speed
-      self.turning_point = (self.x, self.y)
+      self.turning_point = (self.x - 23, self.y)
     if self.up_pressed:
       self.velY = -self.speed
-      self.turning_point = (self.x, self.y)
+      self.turning_point = (self.x, self.y - 23)
     if self.down_pressed:
       self.velY = self.speed
-      self.turning_point = (self.x, self.y)
+      self.turning_point = (self.x, self.y + 23)
 
     # changing the x and y coordinate
     self.x += self.velX
