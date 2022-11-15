@@ -172,11 +172,22 @@ while run:
 
     # deciding when each part of the snake in the array must change direction
     for i in range(1, len(player)):
-      if (player[i].x, player[i].y) == player[i - 1].turning_point:
-        player[i].right_pressed = player[i - 1].right_pressed
-        player[i].left_pressed = player[i - 1].left_pressed
-        player[i].up_pressed = player[i - 1].up_pressed
-        player[i].down_pressed = player[i - 1].down_pressed
+      if player[i].x < player[i - 1].x:
+        player[i].left_pressed = True
+        player[i].up_pressed = False
+        player[i].down_pressed = False
+      elif player[i].x > player[i - 1].x:
+        player[i].right_pressed = True
+        player[i].up_pressed = False
+        player[i].down_pressed = False
+      elif player[i].y > player[i - 1].y:
+        player[i].up_pressed = True
+        player[i].right_pressed = False
+        player[i].left_pressed = False
+      elif player[i].y < player[i - 1].y:
+        player[i].down_pressed = True
+        player[i].right_pressed = False
+        player[i].left_pressed = False
 
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
