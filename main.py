@@ -170,25 +170,6 @@ while run:
     if event.type == pygame.QUIT:
       run = False
 
-    # deciding when each part of the snake in the array must change direction
-    for i in range(1, len(player)):
-      if player[i].x < player[i - 1].x:
-        player[i].left_pressed = True
-        player[i].up_pressed = False
-        player[i].down_pressed = False
-      elif player[i].x > player[i - 1].x:
-        player[i].right_pressed = True
-        player[i].up_pressed = False
-        player[i].down_pressed = False
-      elif player[i].y > player[i - 1].y:
-        player[i].up_pressed = True
-        player[i].right_pressed = False
-        player[i].left_pressed = False
-      elif player[i].y < player[i - 1].y:
-        player[i].down_pressed = True
-        player[i].right_pressed = False
-        player[i].left_pressed = False
-
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed:
@@ -207,6 +188,26 @@ while run:
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
+        
+      if snake.left_pressed or snake.right_pressed or snake.up_pressed or snake.down_pressed:
+        # deciding when each part of the snake in the array must change direction
+        for i in range(1, len(player)):
+          if player[i].x < player[i - 1].x:
+            player[i].left_pressed = True
+            player[i].up_pressed = False
+            player[i].down_pressed = False
+          elif player[i].x > player[i - 1].x:
+            player[i].right_pressed = True
+            player[i].up_pressed = False
+            player[i].down_pressed = False
+          elif player[i].y > player[i - 1].y:
+            player[i].up_pressed = True
+            player[i].right_pressed = False
+            player[i].left_pressed = False
+          elif player[i].y < player[i - 1].y:
+            player[i].down_pressed = True
+            player[i].right_pressed = False
+            player[i].left_pressed = False
 
 
     # ending the game when the snake hits the edge
