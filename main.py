@@ -169,25 +169,6 @@ while run:
     # ending the game when the window is closed
     if event.type == pygame.QUIT:
       run = False
-
-    # changing the direction of movement depending on the key that was pressed
-    if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_LEFT and not snake.right_pressed:
-        snake.left_pressed = True
-        snake.up_pressed = False
-        snake.down_pressed = False
-      if event.key == pygame.K_RIGHT and not snake.left_pressed:
-        snake.right_pressed = True
-        snake.up_pressed = False
-        snake.down_pressed = False
-      if event.key == pygame.K_UP and not snake.down_pressed:
-        snake.up_pressed = True
-        snake.right_pressed = False
-        snake.left_pressed = False
-      if event.key == pygame.K_DOWN and not snake.up_pressed:
-        snake.down_pressed = True
-        snake.right_pressed = False
-        snake.left_pressed = False
         
       if snake.left_pressed or snake.right_pressed or snake.up_pressed or snake.down_pressed:
         # deciding when each part of the snake in the array must change direction
@@ -238,6 +219,26 @@ while run:
       apple.drawn = False
       snake.score += 1
       pygame.display.update()
+    
+    
+    # changing the direction of movement depending on the key that was pressed
+    if event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_LEFT and not snake.right_pressed:
+        snake.left_pressed = True
+        snake.up_pressed = False
+        snake.down_pressed = False
+      if event.key == pygame.K_RIGHT and not snake.left_pressed:
+        snake.right_pressed = True
+        snake.up_pressed = False
+        snake.down_pressed = False
+      if event.key == pygame.K_UP and not snake.down_pressed:
+        snake.up_pressed = True
+        snake.right_pressed = False
+        snake.left_pressed = False
+      if event.key == pygame.K_DOWN and not snake.up_pressed:
+        snake.down_pressed = True
+        snake.right_pressed = False
+        snake.left_pressed = False
 
   for i in range(0, len(player)):
     player[i].move()
