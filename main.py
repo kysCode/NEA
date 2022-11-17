@@ -200,11 +200,11 @@ while run:
             player[i].right_pressed = True
             player[i].up_pressed = False
             player[i].down_pressed = False
-          elif player[i].y < player[i - 1].y:
+          elif player[i].y > player[i - 1].y:
             player[i].up_pressed = True
             player[i].right_pressed = False
             player[i].left_pressed = False
-          elif player[i].y > player[i - 1].y:
+          elif player[i].y < player[i - 1].y:
             player[i].down_pressed = True
             player[i].right_pressed = False
             player[i].left_pressed = False
