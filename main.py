@@ -48,7 +48,9 @@ class Snake():
     self.hitBoundary = False
     self.angle = 0
     self.score = 0
-    self.turning_point = (0,0)
+    self.lastX = self.x
+    self.lastY = self.y
+    self.lastAngle = self.angle
       
   # draws snake on screen
   def draw(self, window):    
@@ -96,6 +98,11 @@ class Snake():
       self.velY = self.speed
       self.turning_point = (self.x, self.y + 23)
 
+    # saving the current coordinates and angle    
+    self.lastX = self.x
+    self.lastY = self.y
+    self.lastAngle = self.angle
+    
     # changing the x and y coordinate
     self.x += self.velX
     self.y += self.velY
@@ -219,26 +226,36 @@ while run:
       apple.drawn = False
       snake.score += 1
       pygame.display.update()
-    
-    
-    # changing the direction of movement depending on the key that was pressed
-    if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_LEFT and not snake.right_pressed:
-        snake.left_pressed = True
-        snake.up_pressed = False
-        snake.down_pressed = False
-      if event.key == pygame.K_RIGHT and not snake.left_pressed:
-        snake.right_pressed = True
-        snake.up_pressed = False
-        snake.down_pressed = False
-      if event.key == pygame.K_UP and not snake.down_pressed:
-        snake.up_pressed = True
-        snake.right_pressed = False
-        snake.left_pressed = False
-      if event.key == pygame.K_DOWN and not snake.up_pressed:
-        snake.down_pressed = True
-        snake.right_pressed = False
-        snake.left_pressed = False
+      
+    if snake.right_pressed or snake.left_pressed:
+    for j in range(1, len(player)):
+      player[j].x = player[j - 1].x
+      player[j].y = player[j - 1].y
+      if player[j - 1].lastAngle == 0:
+        player[j].x -= 23
+        player[j].right_pressed = True
+        player[j].up_pressed = False
+        player[j].down_pressed = False
+      elif player[j - 1].lastAngle == 180:
+        player[j].x += 23
+        player[j].left_pressed = True
+        player[j].up_pressed = False
+        player[j].down_pressed = False
+
+  elif snake.up_pressed or snake.down_pressed:
+    for j in range(1, len(player)):
+      player[j].x = player[j - 1].x
+      player[j].y = player[j - 1].y
+      if player[j - 1].lastAngle == 90:
+        player[j].y += 23
+        player[j].right_pressed = False
+        player[j].up_pressed = True
+        player[j].left_pressed = False
+      elif player[j - 1].lastAngle == 270:
+        player[j].y -= 23
+        player[j].right_pressed = False
+        player[j].left_pressed = False
+        player[j].down_pressed = True
 
   for i in range(0, len(player)):
     player[i].move()
