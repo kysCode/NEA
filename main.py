@@ -228,19 +228,19 @@ while run:
       pygame.display.update()
       
     if snake.right_pressed or snake.left_pressed:
-    for j in range(1, len(player)):
-      player[j].x = player[j - 1].x
-      player[j].y = player[j - 1].y
-      if player[j - 1].lastAngle == 0:
-        player[j].x -= 23
-        player[j].right_pressed = True
-        player[j].up_pressed = False
-        player[j].down_pressed = False
-      elif player[j - 1].lastAngle == 180:
-        player[j].x += 23
-        player[j].left_pressed = True
-        player[j].up_pressed = False
-        player[j].down_pressed = False
+        for j in range(1, len(player)):
+          player[j].x = player[j - 1].x
+          player[j].y = player[j - 1].y
+          if player[j - 1].lastAngle == 0:
+            player[j].x -= 23
+            player[j].right_pressed = True
+            player[j].up_pressed = False
+            player[j].down_pressed = False
+          elif player[j - 1].lastAngle == 180:
+            player[j].x += 23
+            player[j].left_pressed = True
+            player[j].up_pressed = False
+            player[j].down_pressed = False
 
   elif snake.up_pressed or snake.down_pressed:
     for j in range(1, len(player)):
