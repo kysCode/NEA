@@ -3,31 +3,31 @@ import random
 
 # button class
 class Button():
-    # constructor
-    def __init__(self, x, y, image, scale):
-        width = image.get_width()
-        height = image.get_height()
-        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-        self.clicked = False
+  # constructor
+  def __init__(self, x, y, image, scale):
+    width = image.get_width()
+    height = image.get_height()
+    self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+    self.rect = self.image.get_rect()
+    self.rect.topleft = (x, y)
+    self.clicked = False
 
-    # method to create the button on screen
-    def draw(self, surface):
-        action = False
-        #getting mouse position
-        pos = pygame.mouse.get_pos()
+  # method to create the button on screen
+  def draw(self, surface):
+    action = False
+    #getting mouse position
+    pos = pygame.mouse.get_pos()
 
-        #check if clicked or not
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True
-                action = True
+    #check if clicked or not
+    if self.rect.collidepoint(pos):
+      if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+        self.clicked = True
+        action = True
 
-        # drawing button on screen
-        surface.blit(self.image, (self.rect.x, self.rect.y))
+    # drawing button on screen
+    surface.blit(self.image, (self.rect.x, self.rect.y))
 
-        return action
+    return action
       
 # snake class
 class Snake():
@@ -44,7 +44,7 @@ class Snake():
     self.right_pressed = False
     self.up_pressed = False
     self.down_pressed = False
-    self.speed = 1
+    self.speed = 0.5
     self.hitBoundary = False
     self.angle = 0
     self.score = 0
@@ -98,7 +98,7 @@ class Snake():
       self.velY = self.speed
       self.turning_point = (self.x, self.y + 23)
 
-    # saving the current coordinates and angle    
+    # saving the current coordinates and angle
     self.lastX = self.x
     self.lastY = self.y
     self.lastAngle = self.angle
@@ -176,27 +176,26 @@ while run:
     # ending the game when the window is closed
     if event.type == pygame.QUIT:
       run = False
-        
-      if snake.left_pressed or snake.right_pressed or snake.up_pressed or snake.down_pressed:
-        # deciding when each part of the snake in the array must change direction
-        for i in range(1, len(player)):
-          if player[i].x > player[i - 1].x:
-            player[i].left_pressed = True
-            player[i].up_pressed = False
-            player[i].down_pressed = False
-          elif player[i].x < player[i - 1].x:
-            player[i].right_pressed = True
-            player[i].up_pressed = False
-            player[i].down_pressed = False
-          elif player[i].y > player[i - 1].y:
-            player[i].up_pressed = True
-            player[i].right_pressed = False
-            player[i].left_pressed = False
-          elif player[i].y < player[i - 1].y:
-            player[i].down_pressed = True
-            player[i].right_pressed = False
-            player[i].left_pressed = False
 
+    # changing the direction of movement depending on the key that was pressed
+    if event.type == pygame.KEYDOWN:
+      snake.turning_point = snake.rect.bottom
+      if event.key == pygame.K_LEFT and not snake.right_pressed:
+        snake.left_pressed = True
+        snake.up_pressed = False
+        snake.down_pressed = False
+      if event.key == pygame.K_RIGHT and not snake.left_pressed:
+        snake.right_pressed = True
+        snake.up_pressed = False
+        snake.down_pressed = False
+      if event.key == pygame.K_UP and not snake.down_pressed:
+        snake.up_pressed = True
+        snake.right_pressed = False
+        snake.left_pressed = False
+      if event.key == pygame.K_DOWN and not snake.up_pressed:
+        snake.down_pressed = True
+        snake.right_pressed = False
+        snake.left_pressed = False
 
     # ending the game when the snake hits the edge
     if snake.hitBoundary and not gameOver:
@@ -216,6 +215,7 @@ while run:
       gameStarted = True
 
   if gameStarted:
+    # making the background and drawing the score, snake and fruit on top
     screen.fill(background)
     snake.draw(screen)
     snake2.draw(screen)
@@ -226,37 +226,39 @@ while run:
       apple.drawn = False
       snake.score += 1
       pygame.display.update()
-      
-    if snake.right_pressed or snake.left_pressed:
-        for j in range(1, len(player)):
-          player[j].x = player[j - 1].x
-          player[j].y = player[j - 1].y
-          if player[j - 1].lastAngle == 0:
-            player[j].x -= 23
-            player[j].right_pressed = True
-            player[j].up_pressed = False
-            player[j].down_pressed = False
-          elif player[j - 1].lastAngle == 180:
-            player[j].x += 23
-            player[j].left_pressed = True
-            player[j].up_pressed = False
-            player[j].down_pressed = False
+
+  if snake.right_pressed or snake.left_pressed:
+    for j in range(1, len(player)):
+      player[j].y = player[j - 1].y
+      if player[j - 1].lastAngle == 0:
+        player[j].x = player[j-1].x - 23
+        player[j].right_pressed = True
+        player[j].up_pressed = False
+        player[j].down_pressed = False
+        print("R")
+      elif player[j - 1].lastAngle == 180:
+        player[j].x = player[j-1].x + 23
+        player[j].left_pressed = True
+        player[j].up_pressed = False
+        player[j].down_pressed = False
+        print("L")
 
   elif snake.up_pressed or snake.down_pressed:
     for j in range(1, len(player)):
       player[j].x = player[j - 1].x
-      player[j].y = player[j - 1].y
       if player[j - 1].lastAngle == 90:
-        player[j].y += 23
+        player[j].y = player[j-1].y + 23
         player[j].right_pressed = False
         player[j].up_pressed = True
         player[j].left_pressed = False
+        print("U")
       elif player[j - 1].lastAngle == 270:
-        player[j].y -= 23
+        player[j].y = player[j-1].y - 23
         player[j].right_pressed = False
         player[j].left_pressed = False
         player[j].down_pressed = True
-
+        print("D")
+  
   for i in range(0, len(player)):
     player[i].move()
   pygame.display.update()
