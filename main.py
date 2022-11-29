@@ -44,7 +44,7 @@ class Snake():
     self.right_pressed = False
     self.up_pressed = False
     self.down_pressed = False
-    self.speed = 1
+    self.vector = Vector2(0,0)
     self.hitBoundary = False
     self.angle = 0
     self.score = 0
@@ -57,42 +57,28 @@ class Snake():
 
   # moving the snake
   def move(self):
-    self.velX = 0
-    self.velY = 0
-
     # checking if the snake has hit the edge of the screen
-    if not (self.x > -10 and self.x < 767 and self.y > -9 and self.y < 618):
+    if not (self.body[0][0] > -10 and self.body[0][0] < 767 and self.body[0][1] > -9 and self.body[0][1] < 618):
       self.hitBoundary = True
       self.left_pressed = False
       self.right_pressed = False
       self.up_pressed = False
       self.down_pressed = False
 
-    # changes the horizontal and vertical velocity depending on the direction the snake is moving in as long as the edge isn't hit
+    # creating the vector which is used to move the snake
     if self.left_pressed:
-      self.velX = -self.speed
+      self.vector = Vector2(-1, 0)
       self.turning_point = (self.x + 23, self.y)
     if self.right_pressed:
-      self.velX = self.speed
-      self.turning_point = (self.x - 23, self.y)
+      self.vector = Vector2(1, 0)
     if self.up_pressed:
-      self.velY = -self.speed
-      self.turning_point = (self.x, self.y - 23)
+      self.vector = Vector2(0, -1)
     if self.down_pressed:
-      self.velY = self.speed
-      self.turning_point = (self.x, self.y + 23)
+      self.vector = Vector2(0, 1)
 
-    # saving the current coordinates and angle
-    self.lastX = self.x
-    self.lastY = self.y
-    self.lastAngle = self.angle
-
-    # changing the x and y coordinate
-    self.x += self.velX
-    self.y += self.velY
-
-    # recreates the sprite in the new position making it seem like it moved
-    self.rect = pygame.Rect(int(self.x), int(self.y), 32, 32)
+    body_copy = self.body[:-1] # copies all the items in the body apart from the last one
+    body_copy.insert(0, body_copy[0] + self.vector) # inserts a new head at the new position
+    self.body = body_copy[:] # contents are copied back into the original
 
 # fruit class
 class Fruit():
@@ -197,6 +183,7 @@ while run:
     # making the background and drawing the score, snake and fruit on top
     screen.fill(background)
     snake.draw(screen)
+    print(snake.body[1], snake.body[2])
     apple.draw(screenWidth, screenHeight, screen)
     screen.blit(score, (0, 0))
     if apple.x - 17 <= snake.x <= apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17:  # checking if the snake and fruit overlap
