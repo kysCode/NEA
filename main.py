@@ -1,5 +1,5 @@
-import pygame
-import random
+import pygame, random
+from pygame.math import Vector2
 
 # button class
 class Button():
@@ -15,10 +15,10 @@ class Button():
   # method to create the button on screen
   def draw(self, surface):
     action = False
-    #getting mouse position
+    # getting mouse position
     pos = pygame.mouse.get_pos()
 
-    #check if clicked or not
+    # check if clicked or not
     if self.rect.collidepoint(pos):
       if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
         self.clicked = True
@@ -28,15 +28,15 @@ class Button():
     surface.blit(self.image, (self.rect.x, self.rect.y))
 
     return action
-      
+
+
 # snake class
 class Snake():
-  #constructor
-  def __init__(self, image, x, y):
-    self.image = pygame.transform.scale(image, (40, 40))
-    self.rect = self.image.get_rect()
-    self.x = int(x)
-    self.y = int(y)
+  # constructor
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+    self.body = [Vector2(x, y), Vector2(x - 23, y), (x - 46, y)]
     self.rect = pygame.Rect(self.x, self.y, 32, 32)
     self.velX = 0
     self.velY = 0
@@ -44,38 +44,22 @@ class Snake():
     self.right_pressed = False
     self.up_pressed = False
     self.down_pressed = False
-    self.speed = 0.5
+    self.speed = 1
     self.hitBoundary = False
     self.angle = 0
     self.score = 0
-    self.lastX = self.x
-    self.lastY = self.y
-    self.lastAngle = self.angle
-      
-  # draws snake on screen
-  def draw(self, window):    
-    # changing the angle of rotation depending on the key pressed
-    if not self.hitBoundary:
-      if self.left_pressed:
-        self.angle = 180
-      elif self.up_pressed:
-        self.angle = 90
-      elif self.down_pressed:
-        self.angle = 270
-      else:
-        self.angle = 0
 
-    # rotating image
-    image = pygame.transform.rotate(self.image, self.angle)
-    
-    #showing the image of the snake on the window
-    window.blit(image, (self.x, self.y))
+  # draws snake on screen
+  def draw(self, window):
+    for block in self.body:
+      block_rect = pygame.Rect(block[0], block[1], 23, 23)
+      pygame.draw.rect(screen,(128,0,128), block_rect)
 
   # moving the snake
   def move(self):
     self.velX = 0
     self.velY = 0
-    
+
     # checking if the snake has hit the edge of the screen
     if not (self.x > -10 and self.x < 767 and self.y > -9 and self.y < 618):
       self.hitBoundary = True
@@ -102,7 +86,7 @@ class Snake():
     self.lastX = self.x
     self.lastY = self.y
     self.lastAngle = self.angle
-    
+
     # changing the x and y coordinate
     self.x += self.velX
     self.y += self.velY
@@ -130,7 +114,8 @@ class Fruit():
     self.randomiseLocation(width, height)
     window.blit(self.image, (self.x, self.y))
     self.drawn = True
-  
+
+
 pygame.init()
 
 # creating text font and colour
@@ -160,12 +145,7 @@ startButton = Button(20, 10, startImg, 0.2)
 
 gameStarted = False
 gameOver = False
-snake = Snake(snakeHead, screenWidth / 2, screenHeight / 2)
-snake2 = Snake(snakeBody, screenWidth / 2 - 23, screenHeight / 2)
-snake3 = Snake(snakeEnd, screenWidth / 2 - 46, screenHeight / 2)
-snake.turning_point = (snake2.x, snake2.y)
-snake2.turning_point = (snake3.x, snake3.y)
-player = [snake, snake2, snake3]
+snake = Snake(screenWidth / 2, screenHeight / 2)
 apple = Fruit(fruitImg)
 
 # creating gameplay loop
@@ -175,11 +155,10 @@ while run:
   for event in pygame.event.get():
     # ending the game when the window is closed
     if event.type == pygame.QUIT:
-      run = False
+        run = False
 
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
-      snake.turning_point = snake.rect.bottom
       if event.key == pygame.K_LEFT and not snake.right_pressed:
         snake.left_pressed = True
         snake.up_pressed = False
@@ -218,49 +197,14 @@ while run:
     # making the background and drawing the score, snake and fruit on top
     screen.fill(background)
     snake.draw(screen)
-    snake2.draw(screen)
-    snake3.draw(screen)
     apple.draw(screenWidth, screenHeight, screen)
-    screen.blit(score, (0,0))
-    if apple.x - 17 <= snake.x <=apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17: # checking if the snake and fruit overlap
+    screen.blit(score, (0, 0))
+    if apple.x - 17 <= snake.x <= apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17:  # checking if the snake and fruit overlap
       apple.drawn = False
       snake.score += 1
       pygame.display.update()
 
-  if snake.right_pressed or snake.left_pressed:
-    for j in range(1, len(player)):
-      player[j].y = player[j - 1].y
-      if player[j - 1].lastAngle == 0:
-        player[j].x = player[j-1].x - 23
-        player[j].right_pressed = True
-        player[j].up_pressed = False
-        player[j].down_pressed = False
-        print("R")
-      elif player[j - 1].lastAngle == 180:
-        player[j].x = player[j-1].x + 23
-        player[j].left_pressed = True
-        player[j].up_pressed = False
-        player[j].down_pressed = False
-        print("L")
-
-  elif snake.up_pressed or snake.down_pressed:
-    for j in range(1, len(player)):
-      player[j].x = player[j - 1].x
-      if player[j - 1].lastAngle == 90:
-        player[j].y = player[j-1].y + 23
-        player[j].right_pressed = False
-        player[j].up_pressed = True
-        player[j].left_pressed = False
-        print("U")
-      elif player[j - 1].lastAngle == 270:
-        player[j].y = player[j-1].y - 23
-        player[j].right_pressed = False
-        player[j].left_pressed = False
-        player[j].down_pressed = True
-        print("D")
-  
-  for i in range(0, len(player)):
-    player[i].move()
+  snake.move()
   pygame.display.update()
   # updating the screen
 
