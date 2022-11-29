@@ -58,23 +58,21 @@ class Snake():
   # moving the snake
   def move(self):
     # checking if the snake has hit the edge of the screen
-    if not (self.body[0][0] > -10 and self.body[0][0] < 767 and self.body[0][1] > -9 and self.body[0][1] < 618):
+    if not (self.body[0][0] > 0 and self.body[0][0] < 777 and self.body[0][1] > 0 and self.body[0][1] < 628):
       self.hitBoundary = True
-      self.left_pressed = False
-      self.right_pressed = False
-      self.up_pressed = False
-      self.down_pressed = False
+      self.vector = (0,0)
 
-    # creating the vector which is used to move the snake
-    if self.left_pressed:
-      self.vector = Vector2(-1, 0)
-      self.turning_point = (self.x + 23, self.y)
-    if self.right_pressed:
-      self.vector = Vector2(1, 0)
-    if self.up_pressed:
-      self.vector = Vector2(0, -1)
-    if self.down_pressed:
-      self.vector = Vector2(0, 1)
+    else:
+      # creating the vector which is used to move the snake
+      if self.left_pressed:
+        self.vector = Vector2(-1, 0)
+        self.turning_point = (self.x + 23, self.y)
+      if self.right_pressed:
+        self.vector = Vector2(1, 0)
+      if self.up_pressed:
+        self.vector = Vector2(0, -1)
+      if self.down_pressed:
+        self.vector = Vector2(0, 1)
 
     body_copy = self.body[:-1] # copies all the items in the body apart from the last one
     body_copy.insert(0, body_copy[0] + self.vector) # inserts a new head at the new position
