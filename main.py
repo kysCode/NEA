@@ -58,7 +58,7 @@ class Snake():
   # moving the snake
   def move(self):
     # checking if the snake has hit the edge of the screen
-    if not (self.body[0][0] > 0 and self.body[0][0] < 777 and self.body[0][1] > 0 and self.body[0][1] < 628):
+    if not (self.body[0][0] > 0 and self.body[0][0] < 777 and self.body[0][1] > 0 and self.body[0][1] < 627):
       self.hitBoundary = True
       self.vector = (0,0)
 
@@ -74,9 +74,9 @@ class Snake():
       if self.down_pressed:
         self.vector = Vector2(0, 1)
 
-    body_copy = self.body[:-1] # copies all the items in the body apart from the last one
-    body_copy.insert(0, body_copy[0] + self.vector) # inserts a new head at the new position
-    self.body = body_copy[:] # contents are copied back into the original
+    self.body.insert(0, self.body[0] + self.vector)
+    if self.vector != (0,0):
+      self.body.pop(-1)
 
 # fruit class
 class Fruit():
@@ -98,7 +98,6 @@ class Fruit():
     self.randomiseLocation(width, height)
     window.blit(self.image, (self.x, self.y))
     self.drawn = True
-
 
 pygame.init()
 
@@ -132,7 +131,7 @@ gameOver = False
 snake = Snake(screenWidth / 2, screenHeight / 2)
 apple = Fruit(fruitImg)
 
-# creating gameplay loop
+# main gameplay loop
 run = True
 while run:
   score = font.render(("Score: " + str(snake.score)), True, black, background)
@@ -189,7 +188,7 @@ while run:
       snake.score += 1
       pygame.display.update()
 
-  snake.move()
+  snake.move() # making the snake move
   pygame.display.update()
   # updating the screen
 
