@@ -29,7 +29,6 @@ class Button():
 
     return action
 
-
 # snake class
 class Snake():
   # constructor
@@ -139,7 +138,7 @@ snake = Snake(cell_number / 2, cell_number / 2)
 apple = Fruit(fruitImg)
 
 SCREEN_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(SCREEN_UPDATE, 90)
+pygame.time.set_timer(SCREEN_UPDATE, 83)
 
 # main gameplay loop
 run = True
@@ -151,8 +150,8 @@ while run:
         run = False
 
     if event.type == SCREEN_UPDATE:
-        snake.move()
-        snake.detectCrash()
+      snake.move()
+      snake.detectCrash()
 
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
