@@ -52,7 +52,7 @@ class Snake():
   # draws snake on screen
   def draw(self, window):
     for block in self.body:
-      block_rect = pygame.Rect(block[0] * cell_size, block[1] * cell_size, 23, 23)
+      block_rect = pygame.Rect(block[0] * cell_size, block[1] * cell_size, cell_size, cell_size)
       pygame.draw.rect(screen,(128,0,128), block_rect)
 
   # moving the snake
@@ -89,8 +89,8 @@ class Fruit():
   # assigning the fruit to a location
   def randomiseLocation(self, w, h):
     if not self.drawn:
-      self.position[0] = random.randint(0, 30)
-      self.position[1] = random.randint(0, 30)
+      self.position[0] = random.randint(0, cell_number)
+      self.position[1] = random.randint(0, cell_number)
 
   # drawing the fruit on the screen
   def draw(self, width, height, window):
@@ -105,8 +105,8 @@ font = pygame.font.SysFont('Arial', 24)
 black = (0, 0, 0)
 
 # creating a grid
-cell_size = 23 # size of each cell in the grid
-cell_number = 30 # number of grids and an axis
+cell_size = 25 # size of each cell in the grid
+cell_number = 26 # number of grids and an axis
 screen = pygame.display.set_mode((cell_size * cell_number, cell_size * cell_number))
 
 # giving the window a name
