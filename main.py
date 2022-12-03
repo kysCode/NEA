@@ -58,7 +58,7 @@ class Snake():
   # moving the snake
   def move(self):
     # checking if the snake has hit the edge of the screen
-    if not (self.body[0][0] > 0 and self.body[0][0] < (cell_size * cell_number) and self.body[0][1] > 0 and self.body[0][1] < (cell_size * cell_number)):
+    if not (self.body[0][0] > 0 and self.body[0][0] < cell_number and self.body[0][1] > 0 and self.body[0][1] < cell_number):
       self.hitBoundary = True
       self.vector = (0,0)
 
