@@ -82,21 +82,20 @@ class Snake():
 class Fruit():
   # constructor
   def __init__(self, image):
-    self.image = pygame.transform.scale(image, (35, 35))
-    self.x = -1
-    self.y = -1
+    self.image = pygame.transform.scale(image, (cell_size, cell_size))
+    self.position = Vector2(-1, -1)
     self.drawn = False
 
   # assigning the fruit to a location
   def randomiseLocation(self, w, h):
     if not self.drawn:
-      self.x = random.randint(0, w - 22)
-      self.y = random.randint(0, h - 22)
+      self.position[0] = random.randint(0, 30)
+      self.position[1] = random.randint(0, 30)
 
   # drawing the fruit on the screen
   def draw(self, width, height, window):
     self.randomiseLocation(width, height)
-    window.blit(self.image, (self.x, self.y))
+    window.blit(self.image, self.position * cell_size)
     self.drawn = True
 
 pygame.init()
@@ -186,10 +185,10 @@ while run:
     # making the background and drawing the score, snake and fruit on top
     screen.fill(background)
     snake.draw(screen)
-    print(snake.body[1], snake.body[2])
+    print(apple.position)
     apple.draw(cell_size * cell_number, cell_size * cell_number, screen)
     screen.blit(score, (0, 0))
-    if apple.x - 17 <= snake.x <= apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17:  # checking if the snake and fruit overlap
+    if apple.position == snake.body[0]:  # checking if the snake and fruit overlap
       apple.drawn = False
       snake.score += 1
       pygame.display.update()
