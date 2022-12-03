@@ -36,7 +36,7 @@ class Snake():
   def __init__(self, x, y):
     self.x = x
     self.y = y
-    self.body = [Vector2(x, y), Vector2(x - 23, y), (x - 46, y)]
+    self.body = [Vector2(x, y), Vector2(x - 1, y), (x - 2, y)]
     self.rect = pygame.Rect(self.x, self.y, 32, 32)
     self.velX = 0
     self.velY = 0
@@ -52,13 +52,13 @@ class Snake():
   # draws snake on screen
   def draw(self, window):
     for block in self.body:
-      block_rect = pygame.Rect(block[0], block[1], 23, 23)
+      block_rect = pygame.Rect(block[0] * cell_size, block[1] * cell_size, 23, 23)
       pygame.draw.rect(screen,(128,0,128), block_rect)
 
   # moving the snake
   def move(self):
     # checking if the snake has hit the edge of the screen
-    if not (self.body[0][0] > 0 and self.body[0][0] < 777 and self.body[0][1] > 0 and self.body[0][1] < 627):
+    if not (self.body[0][0] > 0 and self.body[0][0] < (cell_size * cell_number - 23) and self.body[0][1] > 0 and self.body[0][1] < (cell_size * cell_number - 23)):
       self.hitBoundary = True
       self.vector = (0,0)
 
@@ -66,7 +66,6 @@ class Snake():
       # creating the vector which is used to move the snake
       if self.left_pressed:
         self.vector = Vector2(-1, 0)
-        self.turning_point = (self.x + 23, self.y)
       if self.right_pressed:
         self.vector = Vector2(1, 0)
       if self.up_pressed:
@@ -74,9 +73,10 @@ class Snake():
       if self.down_pressed:
         self.vector = Vector2(0, 1)
 
-    self.body.insert(0, self.body[0] + self.vector)
-    if self.vector != (0,0):
-      self.body.pop(-1)
+    if self.vector != (0,0): # prevents adjustments to the snake when it isn't moving
+      self.body.insert(0, self.body[0] + self.vector) # creates a new block in the new position
+      if len(self.body) > self.score + 3:
+        self.body.pop(-1) # whenever the difference between body length and score is more than 3 the tail is removed
 
 # fruit class
 class Fruit():
@@ -105,10 +105,10 @@ pygame.init()
 font = pygame.font.SysFont('Arial', 24)
 black = (0, 0, 0)
 
-# giving the window its dimensions
-screenWidth = 800
-screenHeight = 650
-screen = pygame.display.set_mode((screenWidth, screenHeight))
+# creating a grid
+cell_size = 23 # size of each cell in the grid
+cell_number = 30 # number of grids and an axis
+screen = pygame.display.set_mode((cell_size * cell_number, cell_size * cell_number))
 
 # giving the window a name
 pygame.display.set_caption("Snek")
@@ -128,7 +128,7 @@ startButton = Button(20, 10, startImg, 0.2)
 
 gameStarted = False
 gameOver = False
-snake = Snake(screenWidth / 2, screenHeight / 2)
+snake = Snake(cell_number / 2, cell_number / 2)
 apple = Fruit(fruitImg)
 
 # main gameplay loop
@@ -163,8 +163,8 @@ while run:
     if snake.hitBoundary and not gameOver:
       print("Game over")
       gameStarted = False
-      snake.x = screenWidth / 2
-      snake.y = screenHeight / 2
+      snake.x = cell_size * cell_number / 2
+      snake.y = cell_size * cell_number / 2
       gameOver = True
 
   # giving the screen its colour
@@ -181,7 +181,7 @@ while run:
     screen.fill(background)
     snake.draw(screen)
     print(snake.body[1], snake.body[2])
-    apple.draw(screenWidth, screenHeight, screen)
+    apple.draw(cell_size * cell_number, cell_size * cell_number, screen)
     screen.blit(score, (0, 0))
     if apple.x - 17 <= snake.x <= apple.x + 17 and apple.y - 17 <= snake.y <= apple.y + 17:  # checking if the snake and fruit overlap
       apple.drawn = False
