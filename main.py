@@ -78,7 +78,7 @@ class Snake():
         self.body.pop(-1) # whenever the difference between body length and score is more than 3 the tail is removed
 
   def detectCrash(self):
-    if not (self.body[0][0] > 0 and self.body[0][0] < cell_number and self.body[0][1] > 0 and self.body[0][1] < cell_number):
+    if not (self.body[0][0] >= 0 and self.body[0][0] < cell_number and self.body[0][1] >= 0 and self.body[0][1] < cell_number):
       self.crashed = True
 
     for i in range(1, len(self.body)):
