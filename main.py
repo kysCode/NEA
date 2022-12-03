@@ -89,8 +89,8 @@ class Fruit():
   # assigning the fruit to a location
   def randomiseLocation(self, w, h):
     if not self.drawn:
-      self.position[0] = random.randint(0, cell_number)
-      self.position[1] = random.randint(0, cell_number)
+      self.position[0] = random.randint(0, cell_number - 1)
+      self.position[1] = random.randint(0, cell_number - 1)
 
   # drawing the fruit on the screen
   def draw(self, width, height, window):
