@@ -45,7 +45,7 @@ class Snake():
     self.up_pressed = False
     self.down_pressed = False
     self.vector = Vector2(0,0)
-    self.hitBoundary = False
+    self.crashed = False
     self.angle = 0
     self.score = 0
 
@@ -57,9 +57,8 @@ class Snake():
 
   # moving the snake
   def move(self):
-    # checking if the snake has hit the edge of the screen
-    if not (self.body[0][0] > 0 and self.body[0][0] < cell_number and self.body[0][1] > 0 and self.body[0][1] < cell_number):
-      self.hitBoundary = True
+    # if the snake crashes it no longer moves
+    if self.crashed:
       self.vector = (0,0)
 
     else:
@@ -77,6 +76,15 @@ class Snake():
       self.body.insert(0, self.body[0] + self.vector) # creates a new block in the new position
       if len(self.body) > self.score + 3:
         self.body.pop(-1) # whenever the difference between body length and score is more than 3 the tail is removed
+
+  def detectCrash(self):
+    if not (self.body[0][0] > 0 and self.body[0][0] < cell_number and self.body[0][1] > 0 and self.body[0][1] < cell_number):
+      self.crashed = True
+
+    for i in range(1, len(self.body)):
+      if self.body[0] == self.body[i]:
+        self.crashed = True
+        break
 
 # fruit class
 class Fruit():
@@ -144,6 +152,7 @@ while run:
 
     if event.type == SCREEN_UPDATE:
         snake.move()
+        snake.detectCrash()
 
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
@@ -165,7 +174,7 @@ while run:
         snake.left_pressed = False
 
     # ending the game when the snake hits the edge
-    if snake.hitBoundary and not gameOver:
+    if snake.crashed and not gameOver:
       print("Game over")
       gameStarted = False
       snake.x = cell_size * cell_number / 2
@@ -185,8 +194,8 @@ while run:
     # making the background and drawing the score, snake and fruit on top
     screen.fill(background)
     snake.draw(screen)
-    print(apple.position)
     apple.draw(cell_size * cell_number, cell_size * cell_number, screen)
+    print(snake.body[0])
     screen.blit(score, (0, 0))
     if apple.position == snake.body[0]:  # checking if the snake and fruit overlap
       apple.drawn = False
