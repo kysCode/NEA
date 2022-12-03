@@ -58,7 +58,7 @@ class Snake():
   # moving the snake
   def move(self):
     # checking if the snake has hit the edge of the screen
-    if not (self.body[0][0] > 0 and self.body[0][0] < (cell_size * cell_number - 23) and self.body[0][1] > 0 and self.body[0][1] < (cell_size * cell_number - 23)):
+    if not (self.body[0][0] > 0 and self.body[0][0] < (cell_size * cell_number) and self.body[0][1] > 0 and self.body[0][1] < (cell_size * cell_number)):
       self.hitBoundary = True
       self.vector = (0,0)
 
@@ -131,6 +131,9 @@ gameOver = False
 snake = Snake(cell_number / 2, cell_number / 2)
 apple = Fruit(fruitImg)
 
+SCREEN_UPDATE = pygame.USEREVENT
+pygame.time.set_timer(SCREEN_UPDATE, 90)
+
 # main gameplay loop
 run = True
 while run:
@@ -139,6 +142,9 @@ while run:
     # ending the game when the window is closed
     if event.type == pygame.QUIT:
         run = False
+
+    if event.type == SCREEN_UPDATE:
+        snake.move()
 
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
@@ -188,7 +194,6 @@ while run:
       snake.score += 1
       pygame.display.update()
 
-  snake.move() # making the snake move
   pygame.display.update()
   # updating the screen
 
