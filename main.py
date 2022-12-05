@@ -184,14 +184,13 @@ while run:
       gameStarted = True
 
   if gameStarted:
-    # making the background and drawing the score, snake and fruit on top
     screen.fill(background) # fills the screen with green
-    snake.draw(screen) # draws the snake on the screen
     screen.blit(score, (0, 0))
     if apple.position == snake.body[0]:  # checking if the head of the snake is in the same position as the fruit
       snake.score += 1 # increasing score
       pygame.display.update() # updating the screen to show new score
 
+    snake.draw(screen) # draws the snake on the screen
     apple.draw(cell_size * cell_number, cell_size * cell_number, screen, snake.body) # draws the snake in a random position on the screen
 
   pygame.display.update()
