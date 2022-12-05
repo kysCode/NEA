@@ -150,18 +150,22 @@ while run:
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed:
+        pygame.time.delay(83)
         snake.left_pressed = True
         snake.up_pressed = False
         snake.down_pressed = False
       if event.key == pygame.K_RIGHT and not snake.left_pressed:
+        pygame.time.delay(83)
         snake.right_pressed = True
         snake.up_pressed = False
         snake.down_pressed = False
       if event.key == pygame.K_UP and not snake.down_pressed:
+        pygame.time.delay(83)
         snake.up_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
       if event.key == pygame.K_DOWN and not snake.up_pressed:
+        pygame.time.delay(83)
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
