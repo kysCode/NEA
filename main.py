@@ -90,18 +90,12 @@ class Fruit():
   # constructor
   def __init__(self, image):
     self.image = pygame.transform.scale(image, (cell_size, cell_size))
-    self.position = Vector2(-1, -1)
-    self.drawn = False
-
-  # assigning the fruit to a location
-  def randomiseLocation(self, w, h):
-    if not self.drawn:
-      self.position[0] = random.randint(0, cell_number - 1)
-      self.position[1] = random.randint(0, cell_number - 1)
+    self.position = Vector2(-1, -1)  
 
   # drawing the fruit on the screen
-  def draw(self, width, height, window):
-    self.randomiseLocation(width, height)
+  def draw(self, width, height, window, list):
+    while self.position in list or self.position == (-1,-1):
+      self.position = Vector2(random.randint(0, cell_number - 1), random.randint(0, cell_number - 1))
     window.blit(self.image, self.position * cell_size)
     self.drawn = True
 
@@ -138,7 +132,7 @@ snake = Snake(cell_number / 2, cell_number / 2)
 apple = Fruit(fruitImg)
 
 SCREEN_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(SCREEN_UPDATE, 83)
+pygame.time.set_timer(SCREEN_UPDATE, 83) # screen is updated every 83 milliseconds
 
 # main gameplay loop
 run = True
@@ -193,13 +187,12 @@ while run:
     # making the background and drawing the score, snake and fruit on top
     screen.fill(background)
     snake.draw(screen)
-    apple.draw(cell_size * cell_number, cell_size * cell_number, screen)
-    print(snake.body[0])
+    apple.draw(cell_size * cell_number, cell_size * cell_number, screen, snake.body)
+    print(apple.position)
     screen.blit(score, (0, 0))
-    if apple.position == snake.body[0]:  # checking if the snake and fruit overlap
-      apple.drawn = False
-      snake.score += 1
-      pygame.display.update()
+    if apple.position == snake.body[0]:  # checking if the head of the snake is in the same position as the fruit
+      snake.score += 1 # increasing score
+      pygame.display.update() # updating the screen to show new score
 
   pygame.display.update()
   # updating the screen
