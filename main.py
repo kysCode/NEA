@@ -174,8 +174,9 @@ while run:
     if snake.crashed and not gameOver:
       print("Game over")
       gameStarted = False
-      snake.x = cell_size * cell_number / 2
-      snake.y = cell_size * cell_number / 2
+      startButton.clicked = False # resets the button so it can be clicked again
+      snake = Snake(cell_number / 2, cell_number / 2) # creates another snake
+      apple.position = Vector2(-1,-1) # causes a new apple position to be made
       gameOver = True
 
   # giving the screen its colour
@@ -183,6 +184,7 @@ while run:
 
   # pressing a button will turn one of the boolean values to true
   if not gameStarted:
+    gameOver = False
     screen.fill(background)
     if startButton.draw(screen):
       gameStarted = True
