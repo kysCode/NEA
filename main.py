@@ -104,6 +104,7 @@ pygame.init()
 # creating text font and colour
 font = pygame.font.SysFont('Arial', 24)
 black = (0, 0, 0)
+white = (255, 255, 255)
 
 # creating a grid
 cell_size = 25 # size of each cell in the grid
@@ -116,8 +117,9 @@ pygame.display.set_caption("Snek")
 # making a colour for the background
 background = (0, 175, 0)
 
-# creating image from text
+# creating images from text
 startImg = font.render(("Start"), True, black, background)
+welcomeImg = font.render(("WELCOME TO SNEK"), True, white, background)
 
 # loading images from computer into the program
 snakeHead = pygame.image.load("snakeHead.png").convert_alpha()
@@ -126,7 +128,7 @@ snakeEnd = pygame.image.load("snakeEnd.png").convert_alpha()
 fruitImg = pygame.image.load("fruit.png").convert_alpha()
 
 # making a button using the image
-startButton = Button(20, 10, startImg, 1)
+startButton = Button(cell_size, 3 * cell_size, startImg, 1)
 
 gameStarted = False
 gameOver = False
@@ -188,6 +190,7 @@ while run:
   if not gameStarted:
     gameOver = False
     screen.fill(background)
+    screen.blit(welcomeImg, ((cell_number * cell_size - welcomeImg.get_width()) / 2, cell_size))
     if startButton.draw(screen):
       gameStarted = True
 
