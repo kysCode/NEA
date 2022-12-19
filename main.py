@@ -90,7 +90,7 @@ class Fruit():
   # constructor
   def __init__(self, image):
     self.image = pygame.transform.scale(image, (cell_size, cell_size))
-    self.position = Vector2(-1, -1)  
+    self.position = Vector2(-1, -1)
 
   # drawing the fruit on the screen
   def draw(self, width, height, window, list):
@@ -116,15 +116,17 @@ pygame.display.set_caption("Snek")
 # making a colour for the background
 background = (0, 175, 0)
 
+# creating image from text
+startImg = font.render(("Start"), True, black, background)
+
 # loading images from computer into the program
-startImg = pygame.image.load("start").convert_alpha()
 snakeHead = pygame.image.load("snakeHead.png").convert_alpha()
 snakeBody = pygame.image.load("snakeBody.png").convert_alpha()
 snakeEnd = pygame.image.load("snakeEnd.png").convert_alpha()
 fruitImg = pygame.image.load("fruit.png").convert_alpha()
 
 # making a button using the image
-startButton = Button(20, 10, startImg, 0.2)
+startButton = Button(20, 10, startImg, 1)
 
 gameStarted = False
 gameOver = False
