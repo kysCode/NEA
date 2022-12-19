@@ -103,6 +103,7 @@ pygame.init()
 
 # creating text font and colour
 font = pygame.font.SysFont('Arial', 24)
+titleFont = pygame.font.SysFont('Calirbri', 36, False, False)
 black = (0, 0, 0)
 white = (255, 255, 255)
 
@@ -119,7 +120,7 @@ background = (0, 175, 0)
 
 # creating images from text
 startImg = font.render(("Start"), True, black, background)
-welcomeImg = font.render(("WELCOME TO SNEK"), True, white, background)
+welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
 
 # loading images from computer into the program
 snakeHead = pygame.image.load("snakeHead.png").convert_alpha()
