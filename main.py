@@ -101,7 +101,7 @@ class Fruit():
 
 pygame.init()
 
-# creating text font and colour
+# creating text fonts and colours
 font = pygame.font.SysFont('Arial', 24)
 titleFont = pygame.font.SysFont('Calirbri', 36, False, False)
 black = (0, 0, 0)
@@ -120,7 +120,10 @@ background = (0, 175, 0)
 
 # creating images from text
 startImg = font.render(("Start"), True, black, background)
+retryImg = font.render(("Retry"), True, black, background)
+mainMenuImg = font.render(("Main Menu"), True, black, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
+gameOverImg = titleFont.render(("GAME OVER"), True, white, background)
 
 # loading images from computer into the program
 snakeHead = pygame.image.load("snakeHead.png").convert_alpha()
@@ -128,13 +131,17 @@ snakeBody = pygame.image.load("snakeBody.png").convert_alpha()
 snakeEnd = pygame.image.load("snakeEnd.png").convert_alpha()
 fruitImg = pygame.image.load("fruit.png").convert_alpha()
 
-# making a button using the image
+# making buttons using the images
 startButton = Button(cell_size, 3 * cell_size, startImg, 1)
+retryButton = Button(cell_size, (cell_size * cell_number - retryImg.get_height())/ 2, retryImg, 1)
+mainMenuButton = Button(cell_size * (cell_number - 1) - mainMenuImg.get_width(), (cell_size * cell_number - mainMenuImg.get_height())/ 2, mainMenuImg, 1)
 
+# game states
 gameStarted = False
 gameOver = False
+mainMenu = True
+
 snake = Snake(cell_number / 2, cell_number / 2)
-apple = Fruit(fruitImg)
 
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE, 83) # screen is updated every 83 milliseconds
@@ -175,35 +182,55 @@ while run:
         snake.right_pressed = False
         snake.left_pressed = False
 
-    # ending the game when the snake hits the edge
-    if snake.crashed and not gameOver:
-      print("Game over")
-      gameStarted = False
-      startButton.clicked = False # resets the button so it can be clicked again
-      snake = Snake(cell_number / 2, cell_number / 2) # creates another snake
-      apple.position = Vector2(-1,-1) # causes a new apple position to be made
-      gameOver = True
+    # checking if the game should end
+    gameOver = snake.crashed
 
   # giving the screen its colour
   screen.fill(background)
 
-  # pressing a button will turn one of the boolean values to true
-  if not gameStarted:
+  # pressing a button change the game states
+  if mainMenu:
     gameOver = False
-    screen.fill(background)
-    screen.blit(welcomeImg, ((cell_number * cell_size - welcomeImg.get_width()) / 2, cell_size))
-    if startButton.draw(screen):
+    screen.blit(welcomeImg, ((cell_number * cell_size - welcomeImg.get_width()) / 2, cell_size)) # displays welcome
+    if startButton.draw(screen): # draws button on screen and checks if it's clicked
+      # changing game state
       gameStarted = True
+      mainMenu = False
+
+      startButton.clicked = False # allows the button to be clicked again later
+      snake = Snake(cell_number / 2, cell_number / 2) # instantiates snake object
+      apple = Fruit(fruitImg) # instantiates apple object
+      apple.position = (-1, -1) # causes the apple to be assigned a random location on screen
 
   if gameStarted:
-    screen.fill(background) # fills the screen with green
     screen.blit(score, (0, 0))
     if apple.position == snake.body[0]:  # checking if the head of the snake is in the same position as the fruit
       snake.score += 1 # increasing score
       pygame.display.update() # updating the screen to show new score
 
     snake.draw(screen) # draws the snake on the screen
-    apple.draw(cell_size * cell_number, cell_size * cell_number, screen, snake.body) # draws the snake in a random position on the screen
+    apple.draw(cell_size * cell_number, cell_size * cell_number, screen, snake.body) # draws the apple in a random position on the screen
+
+  if gameOver:
+    gameStarted = False # ends the game
+    scoreImg = font.render(("Your score was "+str(snake.score)), True, black, background) # making an image to display the score
+    screen.blit(gameOverImg, ((cell_number * cell_size - gameOverImg.get_width()) / 2, cell_size)) # displaying game over
+    screen.blit(scoreImg, ((cell_size * cell_number - scoreImg.get_width()) / 2, (cell_size * cell_number) / 4)) # displays score obtained
+    if retryButton.draw(screen): # draws retry button on screen and checks if it's been clicked
+      # changing game states
+      gameStarted = True
+      gameOver = False
+
+      retryButton.clicked = False # allows the button to be clicked later
+      snake = Snake(cell_number / 2, cell_number / 2) # instantiates new snake
+      apple.position = (-1, -1) # causes the apple to be drawn at a random location on screen
+
+    if mainMenuButton.draw(screen): # draws main menu button on screen and checks if it's been clicked
+      # changing game states
+      mainMenu = True
+      gameOver = False
+
+      mainMenuButton.clicked = False # allows the button to be clicked later
 
   pygame.display.update()
   # updating the screen
