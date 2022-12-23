@@ -32,13 +32,11 @@ class Button():
 # snake class
 class Snake():
   # constructor
-  def __init__(self, x, y):
+  def __init__(self, x, y, head):
     self.x = x
     self.y = y
     self.body = [Vector2(x, y), Vector2(x - 1, y), (x - 2, y)]
     self.rect = pygame.Rect(self.x, self.y, 32, 32)
-    self.velX = 0
-    self.velY = 0
     self.left_pressed = False
     self.right_pressed = False
     self.up_pressed = False
@@ -47,12 +45,17 @@ class Snake():
     self.crashed = False
     self.angle = 0
     self.score = 0
+    self.head = head
 
   # draws snake on screen
   def draw(self, window):
-    for block in self.body:
+    for index, block in enumerate(self.body):
       block_rect = pygame.Rect(block[0] * cell_size, block[1] * cell_size, cell_size, cell_size)
-      pygame.draw.rect(screen,(128,0,128), block_rect)
+
+      if index == 0:
+        screen.blit(self.head, block_rect)
+      else:
+        pygame.draw.rect(screen, (128, 0, 128), block_rect)
 
   # moving the snake
   def move(self):
@@ -141,7 +144,7 @@ gameStarted = False
 gameOver = False
 mainMenu = True
 
-snake = Snake(cell_number / 2, cell_number / 2)
+snake = Snake(cell_number / 2, cell_number / 2, snakeHead)
 
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE, 83) # screen is updated every 83 milliseconds
@@ -198,7 +201,7 @@ while run:
       mainMenu = False
 
       startButton.clicked = False # allows the button to be clicked again later
-      snake = Snake(cell_number / 2, cell_number / 2) # instantiates snake object
+      snake = Snake(cell_number / 2, cell_number / 2, snakeHead) # instantiates snake object
       apple = Fruit(fruitImg) # instantiates apple object
       apple.position = (-1, -1) # causes the apple to be assigned a random location on screen
 
@@ -222,7 +225,7 @@ while run:
       gameOver = False
 
       retryButton.clicked = False # allows the button to be clicked later
-      snake = Snake(cell_number / 2, cell_number / 2) # instantiates new snake
+      snake = Snake(cell_number / 2, cell_number / 2, snakeHead) # instantiates new snake
       apple.position = (-1, -1) # causes the apple to be drawn at a random location on screen
 
     if mainMenuButton.draw(screen): # draws main menu button on screen and checks if it's been clicked
