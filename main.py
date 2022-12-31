@@ -36,7 +36,6 @@ class Snake():
     self.x = x
     self.y = y
     self.body = [Vector2(x, y), Vector2(x - 1, y), (x - 2, y)]
-    self.rect = pygame.Rect(self.x, self.y, 32, 32)
     self.left_pressed = False
     self.right_pressed = False
     self.up_pressed = False
@@ -45,21 +44,42 @@ class Snake():
     self.crashed = False
     self.angle = 0
     self.score = 0
-    self.head = head
-    self.middle = middle
-    self.end = end
+    self.head = pygame.transform.scale(head, (cell_size, cell_size))
+    self.middle = pygame.transform.scale(middle, (cell_size, cell_size))
+    self.end = pygame.transform.scale(end, (cell_size, cell_size))
 
   # draws snake on screen
   def draw(self, window):
     for index, block in enumerate(self.body):
       block_rect = pygame.Rect(block[0] * cell_size, block[1] * cell_size, cell_size, cell_size)
+      # makes a 'block' in the place where the item will appear on screen
 
-      if index == 0:
-        screen.blit(self.head, block_rect)
-      elif index == len(snake.body) - 1:
-        screen.blit(self.end, block_rect)
+      if index == 0: # checks if the current block is for the head
+        if self.vector == (0,0) or self.vector == (1,0): # checks if the snake is stationary or moving right
+          newHead = self.head # makes a copy of the head
+        elif self.vector == (-1, 0): # checks if the snake is moving left
+          newHead = pygame.transform.rotate(self.head, 180) # makes a copy of the head that is rotated 180 degrees
+        elif self.vector == (0, 1): # checks if the snake is moving down
+          newHead = pygame.transform.rotate(self.head, 270) # makes a copy of the snake that is rotated 270 degrees anti-clockwise
+        elif self.vector == (0, -1): # checks if the snake is moving up
+          newHead = pygame.transform.rotate(self.head, 90) # makes a copy of the snake that is rotated 90 degrees anti-clockwise
+
+        screen.blit(newHead, block_rect) # shows the head on screen with the right location and orientation
+
+      elif index == len(snake.body) - 1: # checks if the current block is for the end of the snake
+        if snake.body[index - 1][0] > snake.body[index][0]: # checks if the previous block is right of the current block
+          newEnd = self.end # makes a copy of the end
+        elif snake.body[index - 1][0] < snake.body[index][0]: # checks if the previous block is left of the current block
+          newEnd = pygame.transform.rotate(self.end, 180) # makes a copy of the end that is rotated 180 degrees
+        elif snake.body[index - 1][1] < snake.body[index][1]: # checks if the previous block is above the current block
+          newEnd = pygame.transform.rotate(self.end, 90) # makes a copy of the snake that is rotated 90 degrees anti-clockwise
+        elif snake.body[index - 1][1] > snake.body[index][1]: # checks if the previous block is below the current block
+          newEnd = pygame.transform.rotate(self.end, 270) # makes a copy of the snake that is rotated 270 degrees anti-clockwise
+
+        screen.blit(newEnd, block_rect) # shows the end of the snake on screen with the right location and orientation
+
       else:
-        screen.blit(self.middle, block_rect)
+        screen.blit(self.middle, block_rect) # shows the middle part of the snake on screen at the right location
 
   # moving the snake
   def move(self):
