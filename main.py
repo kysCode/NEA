@@ -249,7 +249,7 @@ while run:
 
   if speedSelection:
     if slowButton.draw(screen):
-      pygame.time.set_timer(SCREEN_UPDATE, 166)
+      pygame.time.set_timer(SCREEN_UPDATE, 119)
       print("slow") # used to check if slow button works
       slowButton.clicked = False
     if normalButton.draw(screen):
@@ -257,7 +257,7 @@ while run:
       print("normal") # used to check if normal speed button works
       normalButton.clicked = False
     if fastButton.draw(screen):
-      pygame.time.set_timer(SCREEN_UPDATE, 42)
+      pygame.time.set_timer(SCREEN_UPDATE, 63)
       print("fast") # used to check if fast button works
       fastButton.clicked = False
     if backButton.draw(screen):
