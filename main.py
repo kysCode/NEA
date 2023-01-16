@@ -156,6 +156,7 @@ blackFastImg = font.render(("Fast"), True, black, background)
 mainMenuImg = font.render(("Main Menu"), True, black, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
 gameOverImg = titleFont.render(("GAME OVER"), True, white, background)
+speedSelectionImg = titleFont.render(("SPEED"), True, white, background)
 
 # loading images from computer into the program
 snakeHead = pygame.image.load("snakeHead.png").convert_alpha()
@@ -244,6 +245,7 @@ while run:
       speedButton.clicked = False
 
   if speedSelection:
+    screen.blit(speedSelectionImg, ((cell_number * cell_size - speedSelectionImg.get_width()) / 2, cell_size))
     if slowButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 119)
       print("slow") # used to check if slow button works
