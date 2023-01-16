@@ -222,15 +222,11 @@ while run:
         snake.right_pressed = False
         snake.left_pressed = False
 
-    # checking if the game should end
-    gameOver = snake.crashed
-
   # giving the screen its colour
   screen.fill(background)
 
   # pressing a button change the game states
   if mainMenu:
-    gameOver = False
     screen.blit(welcomeImg, ((cell_number * cell_size - welcomeImg.get_width()) / 2, cell_size)) # displays welcome
     if startButton.draw(screen): # draws button on screen and checks if it's clicked
       # changing game state
@@ -273,6 +269,9 @@ while run:
 
     snake.draw(screen) # draws the snake on the screen
     apple.draw(cell_size * cell_number, cell_size * cell_number, screen, snake.body) # draws the apple in a random position on the screen
+    
+    # checking if the game should end
+    gameOver = snake.crashed
 
   if gameOver:
     gameStarted = False # ends the game
