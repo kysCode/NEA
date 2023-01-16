@@ -181,7 +181,6 @@ speedSelection = False
 
 snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd)
 # setting default speed
-normalButton.clicked = True
 speed = 1
 
 SCREEN_UPDATE = pygame.USEREVENT
@@ -251,15 +250,15 @@ while run:
   if speedSelection:
     if slowButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 166)
-      print("slow")
+      print("slow") # used to check if slow button works
       slowButton.clicked = False
     if normalButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 83)
-      print("normal")
+      print("normal") # used to check if normal speed button works
       normalButton.clicked = False
     if fastButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 42)
-      print("fast")
+      print("fast") # used to check if fast button works
       fastButton.clicked = False
     if backButton.draw(screen):
       speedSelection = False
