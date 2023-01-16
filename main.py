@@ -55,13 +55,13 @@ class Snake():
       # makes a 'block' in the place where the item will appear on screen
 
       if index == 0: # checks if the current block is for the head
-        if self.vector == (0,0) or self.vector == (1,0): # checks if the snake is stationary or moving right
+        if self.vector == (0,0) or self.vector == (speed,0): # checks if the snake is stationary or moving right
           newHead = self.head # makes a copy of the head
-        elif self.vector == (-1, 0): # checks if the snake is moving left
+        elif self.vector == (-speed, 0): # checks if the snake is moving left
           newHead = pygame.transform.rotate(self.head, 180) # makes a copy of the head that is rotated 180 degrees
-        elif self.vector == (0, 1): # checks if the snake is moving down
+        elif self.vector == (0, speed): # checks if the snake is moving down
           newHead = pygame.transform.rotate(self.head, 270) # makes a copy of the snake that is rotated 270 degrees anti-clockwise
-        elif self.vector == (0, -1): # checks if the snake is moving up
+        elif self.vector == (0, -speed): # checks if the snake is moving up
           newHead = pygame.transform.rotate(self.head, 90) # makes a copy of the snake that is rotated 90 degrees anti-clockwise
 
         screen.blit(newHead, block_rect) # shows the head on screen with the right location and orientation
@@ -90,13 +90,13 @@ class Snake():
     else:
       # creating the vector which is used to move the snake
       if self.left_pressed:
-        self.vector = Vector2(-1, 0)
+        self.vector = Vector2(-speed, 0)
       if self.right_pressed:
-        self.vector = Vector2(1, 0)
+        self.vector = Vector2(speed, 0)
       if self.up_pressed:
-        self.vector = Vector2(0, -1)
+        self.vector = Vector2(0, -speed)
       if self.down_pressed:
-        self.vector = Vector2(0, 1)
+        self.vector = Vector2(0, speed)
 
     if self.vector != (0,0): # prevents adjustments to the snake when it isn't moving
       self.body.insert(0, self.body[0] + self.vector) # creates a new block in the new position
@@ -148,6 +148,11 @@ background = (0, 175, 0)
 # creating images from text
 startImg = font.render(("Start"), True, black, background)
 retryImg = font.render(("Retry"), True, black, background)
+speedImg = font.render(("Speed"), True, black, background)
+backImg = font.render(("Back"), True, black, background)
+blackSlowImg = font.render(("Slow"), True, black, background)
+blackNormalImg = font.render(("Normal"), True, black, background)
+blackFastImg = font.render(("Fast"), True, black, background)
 mainMenuImg = font.render(("Main Menu"), True, black, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
 gameOverImg = titleFont.render(("GAME OVER"), True, white, background)
@@ -160,6 +165,11 @@ fruitImg = pygame.image.load("fruit.png").convert_alpha()
 
 # making buttons using the images
 startButton = Button(cell_size, 3 * cell_size, startImg, 1)
+speedButton = Button(cell_size, 5 * cell_size, speedImg, 1)
+backButton = Button(cell_size, cell_number * cell_size - backImg.get_height(), backImg, 1)
+slowButton = Button(cell_size, 3 * cell_size, blackSlowImg, 1)
+normalButton = Button(cell_size, 5 * cell_size, blackNormalImg, 1)
+fastButton = Button(cell_size, 7 * cell_size, blackFastImg, 1)
 retryButton = Button(cell_size, (cell_size * cell_number - retryImg.get_height())/ 2, retryImg, 1)
 mainMenuButton = Button(cell_size * (cell_number - 1) - mainMenuImg.get_width(), (cell_size * cell_number - mainMenuImg.get_height())/ 2, mainMenuImg, 1)
 
@@ -167,8 +177,12 @@ mainMenuButton = Button(cell_size * (cell_number - 1) - mainMenuImg.get_width(),
 gameStarted = False
 gameOver = False
 mainMenu = True
+speedSelection = False
 
 snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd)
+# setting default speed
+normalButton.clicked = True
+speed = 1
 
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE, 83) # screen is updated every 83 milliseconds
@@ -228,6 +242,29 @@ while run:
       snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd) # instantiates snake object
       apple = Fruit(fruitImg) # instantiates apple object
       apple.position = (-1, -1) # causes the apple to be assigned a random location on screen
+
+    if speedButton.draw(screen):
+      mainMenu = False
+      speedSelection = True
+      speedButton.clicked = False
+
+  if speedSelection:
+    if slowButton.draw(screen):
+      pygame.time.set_timer(SCREEN_UPDATE, 166)
+      print("slow")
+      slowButton.clicked = False
+    if normalButton.draw(screen):
+      pygame.time.set_timer(SCREEN_UPDATE, 83)
+      print("normal")
+      normalButton.clicked = False
+    if fastButton.draw(screen):
+      pygame.time.set_timer(SCREEN_UPDATE, 42)
+      print("fast")
+      fastButton.clicked = False
+    if backButton.draw(screen):
+      speedSelection = False
+      mainMenu = True
+      backButton.clicked = False
 
   if gameStarted:
     screen.blit(score, (0, 0))
