@@ -151,8 +151,11 @@ retryImg = font.render(("Retry"), True, black, background)
 speedImg = font.render(("Speed"), True, black, background)
 backImg = font.render(("Back"), True, black, background)
 blackSlowImg = font.render(("Slow"), True, black, background)
+whiteSlowImg = font.render(("Slow"), True, white, background)
 blackNormalImg = font.render(("Normal"), True, black, background)
+whiteNormalImg = font.render(("Normal"), True, white, background)
 blackFastImg = font.render(("Fast"), True, black, background)
+whiteFastImg = font.render(("Fast"), True, white, background)
 mainMenuImg = font.render(("Main Menu"), True, black, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
 gameOverImg = titleFont.render(("GAME OVER"), True, white, background)
@@ -248,15 +251,15 @@ while run:
     screen.blit(speedSelectionImg, ((cell_number * cell_size - speedSelectionImg.get_width()) / 2, cell_size))
     if slowButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 119)
-      print("slow") # used to check if slow button works
+      screen.blit(whiteSlowImg, (cell_size, 3 * cell_size)) # will change the colour of the text to white to show it has been selected
       slowButton.clicked = False
     if normalButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 83)
-      print("normal") # used to check if normal speed button works
+      screen.blit(whiteNormalImg, (cell_size, 5 * cell_size)) # will change the colour of the text to white to show it has been selected
       normalButton.clicked = False
     if fastButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 63)
-      print("fast") # used to check if fast button works
+      screen.blit(whiteFastImg, (cell_size, 7 * cell_size)) # will change the colour of the text to white to show it has been selected
       fastButton.clicked = False
     if backButton.draw(screen):
       speedSelection = False
