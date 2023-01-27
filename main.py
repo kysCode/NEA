@@ -246,21 +246,30 @@ while run:
       mainMenu = False
       speedSelection = True
       speedButton.clicked = False
+      selected = 'n'
 
   if speedSelection:
     screen.blit(speedSelectionImg, ((cell_number * cell_size - speedSelectionImg.get_width()) / 2, cell_size))
     if slowButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 119)
-      screen.blit(whiteSlowImg, (cell_size, 3 * cell_size)) # will change the colour of the text to white to show it has been selected
+      selected = 's'
       slowButton.clicked = False
     if normalButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 83)
-      screen.blit(whiteNormalImg, (cell_size, 5 * cell_size)) # will change the colour of the text to white to show it has been selected
+      selected = 'n'
       normalButton.clicked = False
     if fastButton.draw(screen):
       pygame.time.set_timer(SCREEN_UPDATE, 63)
-      screen.blit(whiteFastImg, (cell_size, 7 * cell_size)) # will change the colour of the text to white to show it has been selected
+      selected = 'f'
       fastButton.clicked = False
+
+    if selected == 'n':
+      screen.blit(whiteNormalImg, (cell_size, 5 * cell_size))
+    elif selected == 's':
+      screen.blit(whiteSlowImg, (cell_size, 3 * cell_size))
+    elif selected == 'f':
+      screen.blit(whiteFastImg, (cell_size, 7 * cell_size))
+    
     if backButton.draw(screen):
       speedSelection = False
       mainMenu = True
