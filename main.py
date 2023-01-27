@@ -264,11 +264,11 @@ while run:
       fastButton.clicked = False
 
     if selected == 'n':
-      screen.blit(whiteNormalImg, (cell_size, 5 * cell_size))
+      screen.blit(whiteNormalImg, (cell_size, 5 * cell_size)) # will change the colour of the text to white to show normal has been selected
     elif selected == 's':
-      screen.blit(whiteSlowImg, (cell_size, 3 * cell_size))
+      screen.blit(whiteSlowImg, (cell_size, 3 * cell_size)) # will change the colour of the text to white to show slow has been selected
     elif selected == 'f':
-      screen.blit(whiteFastImg, (cell_size, 7 * cell_size))
+      screen.blit(whiteFastImg, (cell_size, 7 * cell_size)) # will change the colour of the text to white to show fast has been selected
     
     if backButton.draw(screen):
       speedSelection = False
