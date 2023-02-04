@@ -270,12 +270,18 @@ while run:
     elif selected == 'f':
       screen.blit(whiteFastImg, (cell_size, 7 * cell_size)) # will change the colour of the text to white to show fast has been selected
     
-    if backButton.draw(screen):
+    if backButton.draw(screen): # sends the user back to the main menu
       speedSelection = False
       mainMenu = True
       backButton.clicked = False
 
   if gameStarted:
+    # obtaining the current high score
+    f = open("HighScores.txt", "r")
+    highest = f.read()
+    f.close()
+    highScore = int(highest) # makes an integer version of the high score to use for comparisons with the snake's score
+
     screen.blit(score, (0, 0))
     if apple.position == snake.body[0]:  # checking if the head of the snake is in the same position as the fruit
       snake.score += 1 # increasing score
@@ -289,9 +295,22 @@ while run:
 
   if gameOver:
     gameStarted = False # ends the game
-    scoreImg = font.render(("Your score was "+str(snake.score)), True, black, background) # making an image to display the score
-    screen.blit(gameOverImg, ((cell_number * cell_size - gameOverImg.get_width()) / 2, cell_size)) # displaying game over
-    screen.blit(scoreImg, ((cell_size * cell_number - scoreImg.get_width()) / 2, (cell_size * cell_number) / 4)) # displays score obtained
+    if snake.score <= highScore:
+      highestImg = font.render(("High score: "+highest), True, black, background) # displays the highest score achieved previously
+
+    else:
+      # writing the new high score into the file
+      f = open("HighScores.txt", "w")
+      f.write(str(snake.score))
+      f.close()
+
+      highestImg = font.render(("Congratulations, you got a new high score!"), True, black, background) # tells the user they've got a new high score
+
+    screen.blit(gameOverImg, ((cell_number * cell_size - gameOverImg.get_width()) / 2, cell_size))  # displaying game over
+    scoreImg = font.render(("Your score was " + str(snake.score)), True, black, background)  # making an image to display the score
+    screen.blit(scoreImg, ((cell_size * cell_number - scoreImg.get_width()) / 2, (cell_size * cell_number) / 4))  # displays score obtained
+    screen.blit(highestImg, ((cell_size * cell_number - highestImg.get_width()) / 2, cell_size * (cell_number / 4 + 2)))  # displays highest score
+
     if retryButton.draw(screen): # draws retry button on screen and checks if it's been clicked
       # changing game states
       gameStarted = True
