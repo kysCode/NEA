@@ -158,7 +158,7 @@ whiteNormalImg = font.render(("Normal"), True, white, background)
 blackFastImg = font.render(("Fast"), True, black, background)
 whiteFastImg = font.render(("Fast"), True, white, background)
 mainMenuImg = font.render(("Main Menu"), True, black, background)
-instructionsImg = font.render(("Instructions"), True, black, background)
+controlsImg = font.render(("Controls"), True, black, background)
 arrowsImg = font.render(("Arrow keys to move"), True, black, background)
 spaceImg = font.render(("SPACE to pause"), True, black, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
@@ -175,7 +175,7 @@ fruitImg = pygame.image.load("fruit.png").convert_alpha()
 # making buttons using the images
 startButton = Button(cell_size, 3 * cell_size, startImg, 1)
 speedButton = Button(cell_size, 5 * cell_size, speedImg, 1)
-instructionsButton = Button(cell_size, 7 * cell_size, instructionsImg, 1)
+controlsButton = Button(cell_size, 7 * cell_size, controlsImg, 1)
 backButton = Button(cell_size, cell_number * cell_size - backImg.get_height(), backImg, 1)
 slowButton = Button(cell_size, 3 * cell_size, blackSlowImg, 1)
 normalButton = Button(cell_size, 5 * cell_size, blackNormalImg, 1)
@@ -188,7 +188,7 @@ gameStarted = False
 gameOver = False
 mainMenu = True
 speedSelection = False
-instructions = False
+controls = False
 
 snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd)
 # setting default speed
@@ -213,22 +213,18 @@ while run:
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed and not snake.paused:
-        pygame.time.delay(83)
         snake.left_pressed = True
         snake.up_pressed = False
         snake.down_pressed = False
       if event.key == pygame.K_RIGHT and not snake.left_pressed and not snake.paused:
-        pygame.time.delay(83)
         snake.right_pressed = True
         snake.up_pressed = False
         snake.down_pressed = False
       if event.key == pygame.K_UP and not snake.down_pressed and not snake.paused:
-        pygame.time.delay(83)
         snake.up_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
       if event.key == pygame.K_DOWN and not snake.up_pressed and not snake.paused:
-        pygame.time.delay(83)
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
@@ -260,16 +256,16 @@ while run:
       speedButton.clicked = False
       selected = 'n'
 
-    if instructionsButton.draw(screen):
+    if controlsButton.draw(screen):
       mainMenu = False
-      instructions = True
-      instructionsButton.clicked = False
+      controls = True
+      controlsButton.clicked = False
 
-  if instructions:
+  if controls:
     screen.blit(arrowsImg, ((cell_number * cell_size - arrowsImg.get_width()) / 2, (cell_number * cell_size - arrowsImg.get_height()) / 2))
     screen.blit(spaceImg, ((cell_number * cell_size - spaceImg.get_width()) / 2, (cell_number * cell_size - spaceImg.get_height()) / 2 + 2 * cell_size))
     if backButton.draw(screen): # sends the user back to the main menu
-      instructions = False
+      controls = False
       mainMenu = True
       backButton.clicked = False
     
