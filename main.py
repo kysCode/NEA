@@ -207,22 +207,22 @@ while run:
       
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_LEFT and not snake.right_pressed:
+      if event.key == pygame.K_LEFT and not snake.right_pressed and not snake.paused:
         pygame.time.delay(83)
         snake.left_pressed = True
         snake.up_pressed = False
         snake.down_pressed = False
-      if event.key == pygame.K_RIGHT and not snake.left_pressed:
+      if event.key == pygame.K_RIGHT and not snake.left_pressed and not snake.paused:
         pygame.time.delay(83)
         snake.right_pressed = True
         snake.up_pressed = False
         snake.down_pressed = False
-      if event.key == pygame.K_UP and not snake.down_pressed:
+      if event.key == pygame.K_UP and not snake.down_pressed and not snake.paused:
         pygame.time.delay(83)
         snake.up_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
-      if event.key == pygame.K_DOWN and not snake.up_pressed:
+      if event.key == pygame.K_DOWN and not snake.up_pressed and not snake.paused:
         pygame.time.delay(83)
         snake.down_pressed = True
         snake.right_pressed = False
@@ -235,9 +235,6 @@ while run:
 
   # giving the screen its colour
   screen.fill(background)
-
-  if snake.paused:
-      screen.blit(pausedImg, ((cell_number * cell_size - pausedImg.get_width()) / 2, (cell_number * cell_size - pausedImg.get_height()) / 2))
 
   # pressing a button change the game states
   if mainMenu:
@@ -292,6 +289,9 @@ while run:
     f.close()
     highScore = int(highest) # makes an integer version of the high score to use for comparisons with the snake's score
 
+    if snake.paused:
+      screen.blit(pausedImg, ((cell_number * cell_size - pausedImg.get_width()) / 2, (cell_number * cell_size - pausedImg.get_height()) / 2)) # displays
+    
     screen.blit(score, (0, 0))
     if apple.position == snake.body[0]:  # checking if the head of the snake is in the same position as the fruit
       snake.score += 1 # increasing score
