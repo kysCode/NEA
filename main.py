@@ -47,6 +47,7 @@ class Snake():
     self.head = pygame.transform.scale(head, (cell_size, cell_size))
     self.middle = pygame.transform.scale(middle, (cell_size, cell_size))
     self.end = pygame.transform.scale(end, (cell_size, cell_size))
+    self.paused = False
 
   # draws snake on screen
   def draw(self, window):
@@ -98,7 +99,7 @@ class Snake():
       if self.down_pressed:
         self.vector = Vector2(0, speed)
 
-    if self.vector != (0,0): # prevents adjustments to the snake when it isn't moving
+    if self.vector != (0,0) and not self.paused: # prevents adjustments to the snake when it isn't moving
       self.body.insert(0, self.body[0] + self.vector) # creates a new block in the new position
       if len(self.body) > self.score + 3:
         self.body.pop(-1) # whenever the difference between body length and score is more than 3 the tail is removed
@@ -160,6 +161,7 @@ mainMenuImg = font.render(("Main Menu"), True, black, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
 gameOverImg = titleFont.render(("GAME OVER"), True, white, background)
 speedSelectionImg = titleFont.render(("SPEED"), True, white, background)
+pausedImg = titleFont.render(("PAUSED"), True, white, background)
 
 # loading images from computer into the program
 snakeHead = pygame.image.load("snakeHead.png").convert_alpha()
@@ -202,7 +204,7 @@ while run:
     if event.type == SCREEN_UPDATE:
       snake.move()
       snake.detectCrash()
-
+      
     # changing the direction of movement depending on the key that was pressed
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_LEFT and not snake.right_pressed:
@@ -225,9 +227,17 @@ while run:
         snake.down_pressed = True
         snake.right_pressed = False
         snake.left_pressed = False
+      if event.key == pygame.K_SPACE:
+        if snake.paused:
+          snake.paused = False
+        else:
+          snake.paused = True
 
   # giving the screen its colour
   screen.fill(background)
+
+  if snake.paused:
+      screen.blit(pausedImg, ((cell_number * cell_size - pausedImg.get_width()) / 2, (cell_number * cell_size - pausedImg.get_height()) / 2))
 
   # pressing a button change the game states
   if mainMenu:
