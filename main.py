@@ -158,6 +158,9 @@ whiteNormalImg = font.render(("Normal"), True, white, background)
 blackFastImg = font.render(("Fast"), True, black, background)
 whiteFastImg = font.render(("Fast"), True, white, background)
 mainMenuImg = font.render(("Main Menu"), True, black, background)
+instructionsImg = font.render(("Instructions"), True, black, background)
+arrowsImg = font.render(("Arrow keys to move"), True, black, background)
+spaceImg = font.render(("SPACE to pause"), True, black, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
 gameOverImg = titleFont.render(("GAME OVER"), True, white, background)
 speedSelectionImg = titleFont.render(("SPEED"), True, white, background)
@@ -172,6 +175,7 @@ fruitImg = pygame.image.load("fruit.png").convert_alpha()
 # making buttons using the images
 startButton = Button(cell_size, 3 * cell_size, startImg, 1)
 speedButton = Button(cell_size, 5 * cell_size, speedImg, 1)
+instructionsButton = Button(cell_size, 7 * cell_size, instructionsImg, 1)
 backButton = Button(cell_size, cell_number * cell_size - backImg.get_height(), backImg, 1)
 slowButton = Button(cell_size, 3 * cell_size, blackSlowImg, 1)
 normalButton = Button(cell_size, 5 * cell_size, blackNormalImg, 1)
@@ -184,6 +188,7 @@ gameStarted = False
 gameOver = False
 mainMenu = True
 speedSelection = False
+instructions = False
 
 snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd)
 # setting default speed
@@ -254,6 +259,20 @@ while run:
       speedSelection = True
       speedButton.clicked = False
       selected = 'n'
+
+    if instructionsButton.draw(screen):
+      mainMenu = False
+      instructions = True
+      instructionsButton.clicked = False
+
+  if instructions:
+    screen.blit(arrowsImg, ((cell_number * cell_size - arrowsImg.get_width()) / 2, (cell_number * cell_size - arrowsImg.get_height()) / 2))
+    screen.blit(spaceImg, ((cell_number * cell_size - spaceImg.get_width()) / 2, (cell_number * cell_size - spaceImg.get_height()) / 2 + 2 * cell_size))
+    if backButton.draw(screen): # sends the user back to the main menu
+      instructions = False
+      mainMenu = True
+      backButton.clicked = False
+    
 
   if speedSelection:
     screen.blit(speedSelectionImg, ((cell_number * cell_size - speedSelectionImg.get_width()) / 2, cell_size))
