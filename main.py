@@ -304,6 +304,12 @@ while run:
     f.close()
     highScore = int(highest) # makes an integer version of the high score to use for comparisons with the snake's score
 
+    for i in range(0, cell_number + 1):
+      for j in range(0, cell_number + 1):
+        if (i + j) % 2 == 0:
+          box = pygame.Rect(i * cell_size, j * cell_size, cell_size, cell_size)
+          pygame.draw.rect(screen, (0, 200, 0), box)
+
     if snake.paused:
       screen.blit(pausedImg, ((cell_number * cell_size - pausedImg.get_width()) / 2, (cell_number * cell_size - pausedImg.get_height()) / 2)) # displays
     
