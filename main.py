@@ -161,6 +161,9 @@ mainMenuImg = font.render(("Main Menu"), True, black, background)
 controlsImg = font.render(("Controls"), True, black, background)
 arrowsImg = font.render(("Arrow keys to move"), True, black, background)
 spaceImg = font.render(("SPACE to pause"), True, black, background)
+styleImg = font.render(("Style"), True, black, background)
+blackRetroImg = font.render(("Retro"), True, black, background)
+whiteRetroImg = font.render(("Retro"), True, white, background)
 welcomeImg = titleFont.render(("WELCOME TO SNEK"), True, white, background)
 gameOverImg = titleFont.render(("GAME OVER"), True, white, background)
 speedSelectionImg = titleFont.render(("SPEED"), True, white, background)
@@ -172,16 +175,22 @@ snakeBody = pygame.image.load("snakeBody.png").convert_alpha()
 snakeEnd = pygame.image.load("snakeEnd.png").convert_alpha()
 fruitImg = pygame.image.load("fruit.png").convert_alpha()
 
+head = snakeHead
+end = snakeEnd
+
 # making buttons using the images
 startButton = Button(cell_size, 3 * cell_size, startImg, 1)
 speedButton = Button(cell_size, 5 * cell_size, speedImg, 1)
 controlsButton = Button(cell_size, 7 * cell_size, controlsImg, 1)
+styleButton = Button(cell_size, 9 * cell_size, styleImg, 1)
 backButton = Button(cell_size, cell_number * cell_size - backImg.get_height(), backImg, 1)
 slowButton = Button(cell_size, 3 * cell_size, blackSlowImg, 1)
 normalButton = Button(cell_size, 5 * cell_size, blackNormalImg, 1)
 fastButton = Button(cell_size, 7 * cell_size, blackFastImg, 1)
 retryButton = Button(cell_size, (cell_size * cell_number - retryImg.get_height())/ 2, retryImg, 1)
 mainMenuButton = Button(cell_size * (cell_number - 1) - mainMenuImg.get_width(), (cell_size * cell_number - mainMenuImg.get_height())/ 2, mainMenuImg, 1)
+normalStyleButton = Button(cell_size, 3 * cell_size, blackNormalImg, 1)
+retroStyleButton = Button(cell_size, 5 * cell_size, blackRetroImg, 1)
 
 # game states
 gameStarted = False
@@ -189,8 +198,10 @@ gameOver = False
 mainMenu = True
 speedSelection = False
 controls = False
+styleSelection = False
+retro = False
 
-snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd)
+snake = Snake(cell_number / 2, cell_number / 2, head, snakeBody, end)
 # setting default speed
 speed = 1
 
@@ -246,24 +257,59 @@ while run:
       mainMenu = False
 
       startButton.clicked = False # allows the button to be clicked again later
-      snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd) # instantiates snake object
+      snake = Snake(cell_number / 2, cell_number / 2, head, snakeBody, end) # instantiates snake object
       apple = Fruit(fruitImg) # instantiates apple object
       apple.position = (-1, -1) # causes the apple to be assigned a random location on screen
 
     if speedButton.draw(screen):
       mainMenu = False
-      speedSelection = True
-      speedButton.clicked = False
+      speedSelection = True # changes the game state
+      speedButton.clicked = False # allows button to be clicked again
       selected = 'n'
 
     if controlsButton.draw(screen):
       mainMenu = False
-      controls = True
-      controlsButton.clicked = False
+      controls = True # changes the game state
+      controlsButton.clicked = False # allows button to be clicked again
+
+    if styleButton.draw(screen):
+      mainMenu = False
+      styleSelection = True # changes game state
+      styleButton.clicked = False # allows button to be clicked again
+
+  if styleSelection:
+    if not retro:
+      screen.blit(whiteNormalImg, (cell_size, 3 * cell_size))
+      if retroStyleButton.draw(screen):
+        retro = True
+        retroStyleButton.clicked = False
+        head = snakeBody
+        end = snakeBody
+        # changes the snake to just be a purple line
+        fruitImg = pygame.image.load("retroFruit.png").convert_alpha() # changes fruit to retro version
+        
+    else:
+      screen.blit(whiteRetroImg, (cell_size, 5 * cell_size))
+      if normalStyleButton.draw(screen):
+        retro = False
+        normalStyleButton.clicked = False
+        head = snakeHead
+        end = snakeEnd
+        # uses head and tail image
+        fruitImg = pygame.image.load("fruit.png").convert_alpha() # changes fruit to default version
+        
+    if backButton.draw(screen):
+      styleSelection = False
+      backButton.clicked = False
+      mainMenu = True
+      # goes back to the main menu
+      
 
   if controls:
+    # displaying the controls
     screen.blit(arrowsImg, ((cell_number * cell_size - arrowsImg.get_width()) / 2, (cell_number * cell_size - arrowsImg.get_height()) / 2))
     screen.blit(spaceImg, ((cell_number * cell_size - spaceImg.get_width()) / 2, (cell_number * cell_size - spaceImg.get_height()) / 2 + 2 * cell_size))
+    
     if backButton.draw(screen): # sends the user back to the main menu
       controls = False
       mainMenu = True
@@ -304,11 +350,12 @@ while run:
     f.close()
     highScore = int(highest) # makes an integer version of the high score to use for comparisons with the snake's score
 
+    # making checkered pattern
     for i in range(0, cell_number + 1):
       for j in range(0, cell_number + 1):
         if (i + j) % 2 == 0:
           box = pygame.Rect(i * cell_size, j * cell_size, cell_size, cell_size)
-          pygame.draw.rect(screen, (0, 200, 0), box)
+          pygame.draw.rect(screen, (0, 150, 0), box) # cretes a dark green box on screen
 
     if snake.paused:
       screen.blit(pausedImg, ((cell_number * cell_size - pausedImg.get_width()) / 2, (cell_number * cell_size - pausedImg.get_height()) / 2)) # displays
@@ -348,7 +395,7 @@ while run:
       gameOver = False
 
       retryButton.clicked = False # allows the button to be clicked later
-      snake = Snake(cell_number / 2, cell_number / 2, snakeHead, snakeBody, snakeEnd) # instantiates new snake
+      snake = Snake(cell_number / 2, cell_number / 2, head, snakeBody, end) # instantiates new snake
       apple.position = (-1, -1) # causes the apple to be drawn at a random location on screen
 
     if mainMenuButton.draw(screen): # draws main menu button on screen and checks if it's been clicked
