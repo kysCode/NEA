@@ -90,13 +90,13 @@ class Snake():
 
     else:
       # creating the vector which is used to move the snake
-      if self.left_pressed:
+      if self.left_pressed and (self.body[0][0], self.body[0][1]) != ((self.body[1][0], self.body[1][1]) + Vector2(1, 0)):
         self.vector = Vector2(-speed, 0)
-      if self.right_pressed:
+      if self.right_pressed and (self.body[0][0], self.body[0][1]) != ((self.body[1][0], self.body[1][1]) - Vector2(1, 0)):
         self.vector = Vector2(speed, 0)
-      if self.up_pressed:
+      if self.up_pressed and (self.body[0][0], self.body[0][1]) != ((self.body[1][0], self.body[1][1]) + Vector2(0, 1)):
         self.vector = Vector2(0, -speed)
-      if self.down_pressed:
+      if self.down_pressed and (self.body[0][0], self.body[0][1]) != ((self.body[1][0], self.body[1][1]) - Vector2(0, 1)):
         self.vector = Vector2(0, speed)
 
     if self.vector != (0,0) and not self.paused: # prevents adjustments to the snake when it isn't moving
